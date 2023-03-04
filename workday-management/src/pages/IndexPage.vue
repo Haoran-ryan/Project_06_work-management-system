@@ -9,7 +9,9 @@
 </template>
 
 <script>
-export default {
-  name: 'PageIndex'
-}
+import { defineComponent } from 'vue'
+
+export default defineComponent({
+  name: 'IndexPage'
+})
 </script>
