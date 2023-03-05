@@ -5,7 +5,12 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: '/manager', component: () => import('src/components/ManagerDashboard.vue') }
+      {
+        path: '/manager',
+        component: () => import('src/components/ManagerDashboard.vue'),
+        exact: true
+      }
+      
     ]
   },
 

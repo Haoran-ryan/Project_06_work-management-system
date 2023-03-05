@@ -1,5 +1,6 @@
 <script setup> 
-    import { ref, toRefs, defineProps } from 'vue';
+    import { ref, toRefs, defineProps, onMounted } from 'vue';
+    import { supabase } from '../lib/supabaseClient'
 
     const props = defineProps({
         displayCreateForm: Boolean,
@@ -13,6 +14,29 @@
         qualifications:'',
         coursesQualified:'',
     }
+    
+    // Supabase 
+    const allTutorsOnSupa = ref([]);
+    async function getAllTutors(){
+        let { data, error } = await supabase
+        .from('tutors')
+        .select('*')
+
+        // TODO : testing , removed later 
+        console.log('Data:', data);
+        console.log('Error:', error);
+
+        if(data){
+        allTutorsOnSupa.value = data;
+        console.log(`data from supabase`, data );
+        console.log('tutorsOnSupa', allTutorsOnSupa.value);
+        }
+    }
+    
+    onMounted(() => {
+        getAllTutors();
+        console.log('Mounted, allTutorsOnSupa:', allTutorsOnSupa.value);
+    })
     // TODO: set up in Supabase 
     const tutors= [
         {
@@ -72,13 +96,15 @@
                     <tr>
                         <th>Tutor Name</th>
                         <th>Email</th>
+                        <th>Qualifications</th>
                         <th colspan="3"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(tutor, index) in tutors" :key="index">
+                    <tr v-for="(tutor, index) in allTutorsOnSupa.value" :key="index">
                         <td>{{ tutor.name }}</td>
                         <td>{{  tutor.email }}</td>
+                        <td>{{ tutor.qualifications }}</td>
                         <td width="75" class="center aligned">Show</td>
                         <td width="75" class="center aligned">Edit</td>
                         <td width="75" class="center aligned">Delete</td>
