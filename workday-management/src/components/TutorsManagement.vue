@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs, defineProps, onMounted } from "vue";
+import { ref, toRefs, defineProps, onMounted, watch } from "vue";
 import { supabase } from "../lib/supabaseClient";
 
 const props = defineProps({
@@ -24,6 +24,9 @@ async function getAllTutors() {
   }
 }
 
+watch(displayCreateForm, (newValue, oldValue) => {
+  getAllTutors();
+});
 onMounted(() => {
   getAllTutors();
 });
@@ -53,13 +56,13 @@ function _submitForm() {
         name: newTutor.name,
         email: newTutor.email,
         qualifications: newTutor.qualifications,
-        coursesQualified: newTutor.coursesQualified,
+        courses_qualified: newTutor.coursesQualified,
       },
     ]);
     console.log("data: ", data);
     console.log("error: ", error);
   };
-
+  insertIntoSupabase();
   // clear the form
   newTutor.name = "";
   newTutor.email = "";
