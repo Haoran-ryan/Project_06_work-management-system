@@ -17,7 +17,7 @@
 
       <q-tabs align="left">
         <q-route-tab to="/manager" label="Manager" />
-        <q-route-tab to="/page2" label="Timetable" />
+        <q-route-tab to="/timetable" label="Timetable" />
         <q-route-tab to="/page3" label="Annoucement" />
       </q-tabs>
     </q-header>
