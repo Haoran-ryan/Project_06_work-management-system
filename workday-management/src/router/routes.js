@@ -12,7 +12,7 @@ const routes = [
       },
       {
         path: '/timetable',
-        component: () => import('src/components/TimetableComponent.vue'),
+        component: () => import('src/components/TimetableDashboard.vue'),
         exact: true
       }
       
