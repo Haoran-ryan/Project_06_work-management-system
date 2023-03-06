@@ -24,6 +24,11 @@ const routes = [
         component: () => import("src/components/ManagerDashboard.vue"),
         exact: true,
       },
+      {
+        path: "/timetable",
+        component: () => import("src/components/TimetableComponent.vue"),
+        exact: true,
+      },
     ],
   },
 

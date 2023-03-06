@@ -17,7 +17,11 @@
       <q-tabs align="left" no-caps>
         <q-route-tab to="/" label="Home" />
         <q-route-tab to="/manager" label="Manager" v-if="store.state.user" />
-        <q-route-tab to="/page2" label="Timetable" v-if="store.state.user" />
+        <q-route-tab
+          to="/timetable"
+          label="Timetable"
+          v-if="store.state.user"
+        />
         <q-route-tab to="/page3" label="Annoucement" v-if="store.state.user" />
       </q-tabs>
     </q-header>
