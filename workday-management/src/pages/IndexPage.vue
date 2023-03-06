@@ -1,17 +1,25 @@
-<template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-  </q-page>
-</template>
+<script setup>
+import { onMounted, ref } from "vue";
+import Account from "/src/components/Account.vue";
+import AuthNew from "/src/components/AuthNew.vue";
+import { supabase } from "/src/lib/supabaseClient";
 
-<script>
-import { defineComponent } from 'vue'
+const session = ref();
 
-export default defineComponent({
-  name: 'IndexPage'
-})
+onMounted(() => {
+  supabase.auth.getSession().then(({ data }) => {
+    session.value = data.session;
+  });
+
+  supabase.auth.onAuthStateChange((_, _session) => {
+    session.value = _session;
+  });
+});
 </script>
+
+<template>
+  <div class="container" style="padding: 50px 0 100px 0">
+    <Account v-if="session" :session="session" />
+    <AuthNew v-else />
+  </div>
+</template>
