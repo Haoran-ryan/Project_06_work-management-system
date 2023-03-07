@@ -30,21 +30,6 @@ watch(displayCreateForm, (newValue, oldValue) => {
 onMounted(() => {
   getAllTutors();
 });
-// TODO: set up in Supabase
-// const tutors= [
-//     {
-//         name: 'John Doe',
-//         email: 'upchh@example.com',
-//         qualifications: 'Computer Science',
-//         coursesQualified: 'Computer Science',
-//     },
-//     {
-//         name: 'John Doe 2',
-//         email: 'upchh2@example.com',
-//         qualifications: 'Computer Science',
-//         coursesQualified: 'Computer Science',
-//     }
-// ]
 
 function _submitForm() {
   console.log("submitting from the form: ", newTutor);
@@ -117,9 +102,17 @@ function _submitForm() {
             <td>{{ tutor.name }}</td>
             <td>{{ tutor.email }}</td>
             <td>{{ tutor.qualifications }}</td>
-            <td width="75" class="center aligned">Show</td>
-            <td width="75" class="center aligned">Edit</td>
-            <td width="75" class="center aligned">Delete</td>
+            <td>
+              <router-link :to="{ name: 'show', params: { id: tutor.id } }">
+                Show
+              </router-link>
+            </td>
+            <td>
+              <router-link :to="{ name: 'edit', params: { id: tutor.id } }">
+                Edit
+              </router-link>
+            </td>
+            <td>Delete</td>
           </tr>
         </tbody>
       </table>
@@ -127,4 +120,57 @@ function _submitForm() {
   </div>
 </template>
 
-<style></style>
+<style>
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+label {
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+input {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  padding: 0.5rem;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.center {
+  text-align: center;
+}
+
+.aligned {
+  vertical-align: middle;
+}
+</style>

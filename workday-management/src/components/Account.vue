@@ -25,7 +25,7 @@ async function getProfile() {
       .eq("id", user.id)
       .single();
 
-    if (error && status !== 406) throw error;
+    if (error && status !== 406) console.log(error);
 
     if (data) {
       username.value = data.username;

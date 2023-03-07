@@ -1,37 +1,84 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-primary text-white" height-hint="98">
+  <q-layout view="lHh Lpr lFf" class="bg-white">
+    <q-header elevated>
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-          </q-avatar>
-          Title
-        </q-toolbar-title>
-
-        <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
-      </q-toolbar>
-
-      <q-tabs align="left" no-caps>
-        <q-route-tab to="/" label="Home" />
-        <q-route-tab to="/manager" label="Manager" v-if="store.state.user" />
-        <q-route-tab
-          to="/timetable"
-          label="Timetable"
-          v-if="store.state.user"
+        <q-btn
+          flat
+          dense
+          round
+          @click="toggleLeftDrawer"
+          aria-label="Menu"
+          icon="menu"
         />
-        <q-route-tab to="/page3" label="Annoucement" v-if="store.state.user" />
-      </q-tabs>
+
+        <q-toolbar-title> Quasar App </q-toolbar-title>
+      </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
-    </q-drawer>
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-2">
+      <q-list>
+        <q-item-label header>Dashboard Navigation</q-item-label>
+        <q-item clickable rel="noopener" to="/">
+          <q-item-section avatar>
+            <q-icon name="school" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Home</q-item-label>
+            <q-item-label caption
+              >Return to the homepage to Sign up or sign in</q-item-label
+            >
+          </q-item-section>
+        </q-item>
+        <q-item clickable rel="noopener" to="/manager">
+          <q-item-section avatar>
+            <q-icon name="code" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Tutor Management</q-item-label>
+            <q-item-label caption>Manage the tutors</q-item-label>
+          </q-item-section>
+        </q-item>
 
-    <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
-      <!-- drawer content -->
+        <q-item clickable rel="noopener" to="/timetable">
+          <q-item-section avatar>
+            <q-icon name="chat" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Classe Management</q-item-label>
+            <q-item-label caption>Manage all the current classes</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable rel="noopener" to="/courses">
+          <q-item-section avatar>
+            <q-icon name="rss_feed" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Course Management</q-item-label>
+            <q-item-label caption>Manage all the courses</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable rel="noopener" to="/">
+          <q-item-section avatar>
+            <q-icon name="record_voice_over" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Annoncements</q-item-label>
+            <q-item-label caption>something to say ....</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable rel="noopener" href="https://facebook.quasar.dev">
+          <q-item-section avatar>
+            <q-icon name="public" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Facebook</q-item-label>
+            <q-item-label caption>@QuasarFramework</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-drawer>
 
     <q-page-container>
@@ -42,17 +89,20 @@
 
 <script>
 import { ref } from "vue";
-import Auth from "src/components/Auth.vue";
-
 import { store } from "src/store.js";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "vue-router";
 
 export default {
+  name: "MainLayout",
+
   setup() {
     const router = useRouter();
     const leftDrawerOpen = ref(false);
-    const rightDrawerOpen = ref(false);
+
+    function toggleLeftDrawer() {
+      leftDrawerOpen.value = !leftDrawerOpen.value;
+    }
 
     // we initially verify if a user is logged in with Supabase
     const getSession = async () => {
@@ -71,14 +121,7 @@ export default {
 
     return {
       leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-
-      rightDrawerOpen,
-      toggleRightDrawer() {
-        rightDrawerOpen.value = !rightDrawerOpen.value;
-      },
+      toggleLeftDrawer,
       store,
     };
   },
