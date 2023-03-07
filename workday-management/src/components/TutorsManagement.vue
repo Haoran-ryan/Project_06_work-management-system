@@ -6,7 +6,7 @@ const props = defineProps({
   displayCreateForm: Boolean,
 });
 const { displayCreateForm } = toRefs(props);
-console.log(` child component - displayCreateForm`, displayCreateForm.value);
+
 const newTutor = {
   name: "",
   email: "",
@@ -32,8 +32,6 @@ onMounted(() => {
 });
 
 function _submitForm() {
-  console.log("submitting from the form: ", newTutor);
-
   // inseret newTutor into Supabase
   const insertIntoSupabase = async () => {
     let { data, error } = await supabase.from("tutors").insert([
@@ -44,8 +42,6 @@ function _submitForm() {
         courses_qualified: newTutor.coursesQualified,
       },
     ]);
-    console.log("data: ", data);
-    console.log("error: ", error);
   };
   insertIntoSupabase();
   // clear the form

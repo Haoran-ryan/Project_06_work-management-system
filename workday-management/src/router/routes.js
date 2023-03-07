@@ -52,6 +52,11 @@ const routes = [
         component: () => import("src/components/CourseIndex.vue"),
         exact: true,
       },
+      {
+        path: "/courses/:id/edit",
+        name: "course_edit",
+        component: () => import("src/components/CourseEdit.vue"),
+      },
     ],
   },
 
