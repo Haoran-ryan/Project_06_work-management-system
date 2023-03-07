@@ -1,3 +1,6 @@
+import TutorShow from "src/components/TutorShow.vue";
+import TutorEdit from "src/components/TutorEdit.vue";
+
 const routes = [
   {
     path: "/",
@@ -28,6 +31,21 @@ const routes = [
         path: "/timetable",
         component: () => import("src/components/TimetableComponent.vue"),
         exact: true,
+      },
+      {
+        path: "/tutors/",
+        component: () => import("src/components/TutorsManagement.vue"),
+        exact: true,
+      },
+      {
+        path: "/tutors/:id",
+        name: "show",
+        component: TutorShow,
+      },
+      {
+        path: "/tutors/:id/edit",
+        name: "edit",
+        component: TutorEdit,
       },
     ],
   },
