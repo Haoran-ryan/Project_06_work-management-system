@@ -1,9 +1,26 @@
 <template>
   <div>
-    <Calendar />
+    <Calendar :allTimes="allTimes" />
     <Times />
   </div>
 </template>
+<script setup>
+import { supabase } from "../lib/supabaseClient";
+import { ref, toRefs, defineProps, onMounted } from "vue";
+const allTimesOnSupa = ref([]);
+async function getAllTimes() {
+  let { data, error } = await supabase.from("times").select("*, tutor:tutor_id(name)");
+
+  if (data) {
+    allTimesOnSupa.value = data;
+  }
+}
+
+onMounted(() => {
+  getAllTimes();
+});
+</script>
+
 
 <script>
 import Calendar from './Calendar.vue';
@@ -14,6 +31,12 @@ export default {
   components: {
     Calendar,
     Times
+  },
+  data(){
+    return{
+      allTimes: 'sss'
+    }
+    
   }
 }
 </script>
