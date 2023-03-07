@@ -18,7 +18,7 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-2">
       <q-list>
         <q-item-label header>Dashboard Navigation</q-item-label>
-        <q-item clickable target="_blank" rel="noopener" to="/">
+        <q-item clickable rel="noopener" to="/">
           <q-item-section avatar>
             <q-icon name="school" />
           </q-item-section>
@@ -29,7 +29,7 @@
             >
           </q-item-section>
         </q-item>
-        <q-item clickable target="_blank" rel="noopener" to="/manager">
+        <q-item clickable rel="noopener" to="/manager">
           <q-item-section avatar>
             <q-icon name="code" />
           </q-item-section>
@@ -39,7 +39,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable target="_blank" rel="noopener" to="/timetable">
+        <q-item clickable rel="noopener" to="/timetable">
           <q-item-section avatar>
             <q-icon name="chat" />
           </q-item-section>
@@ -49,7 +49,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable target="_blank" rel="noopener" to="/manager">
+        <q-item clickable rel="noopener" to="/manager">
           <q-item-section avatar>
             <q-icon name="rss_feed" />
           </q-item-section>
@@ -59,7 +59,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable target="_blank" rel="noopener" to="/">
+        <q-item clickable rel="noopener" to="/">
           <q-item-section avatar>
             <q-icon name="record_voice_over" />
           </q-item-section>
@@ -69,12 +69,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          target="_blank"
-          rel="noopener"
-          href="https://facebook.quasar.dev"
-        >
+        <q-item clickable rel="noopener" href="https://facebook.quasar.dev">
           <q-item-section avatar>
             <q-icon name="public" />
           </q-item-section>
