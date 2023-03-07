@@ -49,7 +49,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable rel="noopener" to="/manager">
+        <q-item clickable rel="noopener" to="/courses">
           <q-item-section avatar>
             <q-icon name="rss_feed" />
           </q-item-section>

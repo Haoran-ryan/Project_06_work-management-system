@@ -47,6 +47,11 @@ const routes = [
         name: "edit",
         component: TutorEdit,
       },
+      {
+        path: "/courses",
+        component: () => import("src/components/CourseIndex.vue"),
+        exact: true,
+      },
     ],
   },
 
