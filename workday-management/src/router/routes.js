@@ -1,6 +1,7 @@
 import TutorShow from "src/components/TutorShow.vue";
 import TutorEdit from "src/components/TutorEdit.vue";
 import CourseIndex from "src/components/CourseIndex.vue";
+import Announcements from "src/components/Announcements.vue"
 
 const routes = [
   {
@@ -58,6 +59,11 @@ const routes = [
         path: "/announcements",
         component: () => import("src/components/Announcements.vue"),
         exact: true,
+      },
+      {
+        path: "/announcements/:id/edit",
+        name: "announcement_edit",
+        component: () => import("src/components/AnnouncementsEdit.vue"),
       },
       {
         path: "/courses/:id/edit",
