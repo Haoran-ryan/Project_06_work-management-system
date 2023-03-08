@@ -1,7 +1,7 @@
 import TutorShow from "src/components/TutorShow.vue";
 import TutorEdit from "src/components/TutorEdit.vue";
 import CourseIndex from "src/components/CourseIndex.vue";
-
+import TutorsManagement from "src/components/TutorsManagement.vue";
 const routes = [
   {
     path: "/",
@@ -25,7 +25,8 @@ const routes = [
       },
       {
         path: "/manager",
-        component: () => import("src/components/ManagerDashboard.vue"),
+        name: "all_tutors",
+        component: TutorsManagement,
         exact: true,
       },
       {
