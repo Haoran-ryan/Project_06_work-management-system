@@ -8,10 +8,12 @@ const displayCreateForm = ref(false);
 <template>
   <div>
     <div>
-      <h1>Manager Dashboard coming</h1>
+      <h3>Tutor Management</h3>
+      <p>Click the button to add a new tutor or list all tutors</p>
       <div class="tutor-buttons">
-        <button @click="displayCreateForm = true">Add Tutor</button>
-        <button @click="displayCreateForm = false">List Tutors</button>
+        <button @click="displayCreateForm = !displayCreateForm">
+          {{ displayCreateForm ? "Add A Tutor" : "List All Tutors" }}
+        </button>
       </div>
     </div>
     <TutorsManagement :displayCreateForm="displayCreateForm" />

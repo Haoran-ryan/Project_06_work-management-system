@@ -7,8 +7,6 @@ const email = ref("");
 const password = ref("");
 const isSignUp = ref(true);
 
-console.log("isSignUp: ", isSignUp.value);
-
 const handleLogin = async () => {
   try {
     loading.value = true;

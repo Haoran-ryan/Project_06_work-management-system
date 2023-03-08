@@ -59,7 +59,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item clickable rel="noopener" to="/">
+        <q-item clickable rel="noopener" to="/announcements">
           <q-item-section avatar>
             <q-icon name="record_voice_over" />
           </q-item-section>
