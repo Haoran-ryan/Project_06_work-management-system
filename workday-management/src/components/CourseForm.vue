@@ -34,12 +34,7 @@
       <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
       <div>
-        <q-btn
-          label="Submit"
-          type="submit"
-          color="primary"
-          v-on:click="handleSubmit"
-        />
+        <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
   </div>
@@ -60,17 +55,17 @@ export default {
   setup(props, { emit }) {
     const router = useRouter();
     const { courseData } = toRefs(props);
-    const { name, duration, description } = courseData.value[0];
+    // const { name, duration, description } = courseData.value[0];
 
-    // const name = ref(courseData.value.name);
-    // const duration = ref(courseData.value.duration);
-    // const description = ref(courseData.value.description);
+    const name = ref(courseData.value[0].name);
+    const duration = ref(courseData.value[0].duration);
+    const description = ref(courseData.value[0].description);
 
     const handleSubmit = function () {
       const courseData = {
-        name: name,
-        duration: duration,
-        description: description,
+        name: name.value,
+        duration: duration.value,
+        description: description.value,
       };
       console.log("before being emitted: ", courseData);
       emit("updateCourse", courseData);

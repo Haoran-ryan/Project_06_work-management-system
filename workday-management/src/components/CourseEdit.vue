@@ -17,9 +17,9 @@ import CourseForm from "src/components/CourseForm.vue";
 
 const courseData = ref({});
 
+const route = useRoute();
 // get the data for the course of the current param id
 const getCourseData = async () => {
-  const route = useRoute();
   const { data, error } = await supabase
     .from("courses")
     .select("*")

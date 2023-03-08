@@ -25,7 +25,7 @@
 
 <script setup>
 import { supabase } from "src/lib/supabaseClient";
-import { reactive, onBeforeMount } from "vue";
+import { reactive, onBeforeMount, onMounted } from "vue";
 
 import CourseForm from "./CourseForm.vue";
 
@@ -42,7 +42,7 @@ const getAllCourses = async () => {
 };
 
 // getAllCourses();
-onBeforeMount(getAllCourses);
+onMounted(getAllCourses);
 </script>
 
 <script></script>

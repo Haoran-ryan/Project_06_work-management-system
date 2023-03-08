@@ -14,13 +14,7 @@
 
       <q-input label="Courses Qualified" filled class="q-mb-md" />
 
-      <q-btn
-        label="Submit"
-        type="submit"
-        color="primary"
-        class="q-mt-md"
-        v-on:click="handleSubmit"
-      />
+      <q-btn label="Submit" type="submit" color="primary" class="q-mt-md" />
     </form>
   </div>
 </template>
