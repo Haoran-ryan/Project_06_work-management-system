@@ -56,7 +56,12 @@ const routes = [
         path: "/announcements",
         component: () => import("src/components/Announcements.vue"),
         exact: true,
-      }
+      },
+      {
+        path: "/courses/:id/edit",
+        name: "course_edit",
+        component: () => import("src/components/CourseEdit.vue"),
+      },
     ],
   },
 
