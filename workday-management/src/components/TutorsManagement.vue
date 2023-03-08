@@ -54,9 +54,8 @@ function _submitForm() {
 
 <template>
   <div>
-    <p>User Component - conditional rendering working</p>
     <div v-if="displayCreateForm">
-      <h3>Create a tutor</h3>
+      <h4>Create a tutor</h4>
       <div>
         <form @submit.prevent="_submitForm">
           <label for="name">Name: </label>
@@ -83,7 +82,7 @@ function _submitForm() {
       </div>
     </div>
     <div v-if="!displayCreateForm">
-      <h3>All Tutors</h3>
+      <h4>All Tutors</h4>
       <table>
         <thead>
           <tr>
