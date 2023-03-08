@@ -33,6 +33,7 @@ export default {
   setup(props, { emit }) {
     const router = useRouter();
     const { tutorData } = toRefs(props);
+    // console.log("tutordata", tutorData.value);
     const name = ref(tutorData.value.name);
     const email = ref(tutorData.value.email);
     const qualifications = ref(tutorData.value.qualifications);
