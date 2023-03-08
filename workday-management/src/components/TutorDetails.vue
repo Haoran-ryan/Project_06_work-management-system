@@ -7,7 +7,7 @@
         <q-card-section>
           <div class="text-overline text-orange-9">Tutuor Profile</div>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ tutorData.name }}</div>
-          <div>
+          <div class="q-pa-sm">
             Email:
             {{
               tutorData.email
@@ -15,7 +15,7 @@
                 : "Please contact the school for information."
             }}
           </div>
-          <div>
+          <div class="q-pa-sm">
             Qualifications:
             {{
               tutorData.qualifcations
@@ -23,7 +23,7 @@
                 : "Qualifications are being updated ..."
             }}
           </div>
-          <div>
+          <div class="q-pa-sm">
             Courses Qualified to Deliver:
             {{
               tutorData.courses_qualified
