@@ -21,13 +21,13 @@
               :to="{ name: 'course_edit', params: { id: course.id } }"
               s
             />
-            <q-btn icon="delete" @click="deleteCourse(course.id)" />
+            <q-btn icon="delete" @click="_deleteCourse(course.id)" />
           </q-item-section>
         </q-item>
       </q-list>
     </div>
 
-    <form v-else @submit.prevent="_submitForm">
+    <form v-else @submit.prevent="_submitCreateForm">
       <h3 class="text-h5">Create A Course</h3>
       <div class="q-pa-md">
         <div class="q-gutter-md" style="max-width: 300px">
@@ -101,7 +101,7 @@ const newCourse = reactive({
   description: "",
 });
 
-function _submitForm() {
+function _submitCreateForm() {
   console.log(newCourse);
   // insert newCourse into Supabase
   const insertIntoSupabase = async function () {
@@ -119,6 +119,11 @@ function _submitForm() {
   newCourse.name = "";
   newCourse.duration = null;
   newCourse.description = "";
+}
+
+async function _deleteCourse(id) {
+  const { data, error } = await supabase.from("courses").delete().eq("id", id);
+  getAllCourses();
 }
 </script>
 
