@@ -56,7 +56,14 @@
           style="background: #ff0080; color: white"
           label="Create"
           type="submit"
+          icon="edit_location"
           no-caps
+        />
+        <q-btn
+          style="background: goldenrod; color: white"
+          label="Back"
+          icon="directions"
+          @click="displayCourses = true"
         />
       </div>
     </form>

@@ -1,5 +1,6 @@
 import TutorShow from "src/components/TutorShow.vue";
 import TutorEdit from "src/components/TutorEdit.vue";
+import CourseIndex from "src/components/CourseIndex.vue";
 
 const routes = [
   {
@@ -49,7 +50,8 @@ const routes = [
       },
       {
         path: "/courses",
-        component: () => import("src/components/CourseIndex.vue"),
+        name: "course_index",
+        component: CourseIndex,
         exact: true,
       },
       {
