@@ -1,6 +1,7 @@
 <script setup>
 import { ref, toRefs, defineProps, onMounted, watch } from "vue";
 import { supabase } from "../lib/supabaseClient";
+import CreateTime from "./CreateTime.vue"
 
 // Supabase
 const timesOnSupa = ref([]);
@@ -8,7 +9,7 @@ async function getAllTimes() {
   let { data, error } = await supabase.from("times").select("*, tutor:tutor_id(name), course:course(name, duration)");
 
   if (data) {
-    timesOnSupa.value = data;
+    timesOnSupa.value = data.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
   }
 }
 
@@ -51,8 +52,9 @@ onMounted(() => {
 
 let timeDetails = {}
 let originalTime
-// let originalTime = {start_date: '', time: '', course: '', tutor_id: ''}
 const editTime = function(event, time) {
+  updateTutors(time)
+  timeDetails = time
   // Assign the time object to the plain JavaScript object timeDetails
   originalTime = JSON.parse(JSON.stringify(time));
   const btn = event.target;
@@ -117,8 +119,30 @@ const deleteTime = async (timeId) => {
 
 const updateTime = async (event,timeId) => {
   const btn = event.target;
-  btn.style.display = 'none'
   const tr = btn.parentElement;
+  let qualifiedTutorIds = []
+  for (let tutor of tutorsOnSupa.value) {
+    if (tutor.courses_qualified.includes(timeDetails.course.name)) {
+      qualifiedTutorIds.push(tutor.id)
+    }
+  }
+  if (!qualifiedTutorIds.includes(parseInt(tr.querySelector('#tutor').value))) {
+    let tutorName = ''
+    for (let tutor of tutorsOnSupa.value) {
+      if (tutor.id == timeDetails.tutor_id) {
+        tutorName = tutor.name
+      }
+    }
+    alert(`${tutorName} is not qualified to teach ${timeDetails.course.name}!`)
+
+    // tr.querySelector('#start_date').value = originalTime.start_date
+    // tr.querySelector('#time').value = originalTime.time
+    // tr.querySelector('#course').value = originalTime.course.name
+    // tr.querySelector('#tutor').value = originalTime.tutor_id
+
+    return
+  }
+  btn.style.display = 'none'
   const inputs = tr.querySelectorAll('input');
   const selects = tr.querySelectorAll('select');
   for (let input of inputs) {
@@ -154,11 +178,26 @@ const updateTime = async (event,timeId) => {
 const createForm = ref(false);
 
 
+const filteredTutors = ref([])
+function updateTutors(time) {
+  filteredTutors.value = tutorsOnSupa.value.filter(tutor => tutor.courses_qualified.includes(time.course.name))
+}
+
+// watch(timeDetails.course, () => {
+//   if (timeDetails.course) {
+//     updateTutors()
+//   } else {
+//     filteredTutors.value = []
+//   }
+// })
+
+
 </script>
+
 
 <template>
     <div>
-        <div class=allTimes><h4>All Times</h4><v-btn id='moreTime' @click="createForm = true"><q-icon name="more_time" /></v-btn></div>
+        <div class=allTimes><h4>All Times</h4><v-btn id='moreTime' @click="createForm = !createForm"><q-icon name="more_time" /></v-btn></div>
         <table>
             <thead>
             <tr>
@@ -170,19 +209,19 @@ const createForm = ref(false);
             </tr>
             </thead>
             <tbody>
-             <CreateTime :createForm="createForm" />
+             <CreateTime :createForm="createForm" @time-created="getAllTimes" />
             <tr v-for="time in timesOnSupa" :key="time.id">
                 <td><input type="date" v-model="time.start_date" id='start_date' class='display'></td>
                 <td><input type="time" v-model="time.time" id='time' class='display'></td>
                 <td>
                   <select v-model="time.course.name" id='course' class='display'>
-                    <option disabled value="">Please select one</option>
+                    <option disabled value="">Please select course</option>
                     <option v-for="course in courseDurations" :key="course.name" :value="course.name">{{ course.name }} ({{ course.duration }} weeks)</option>
                   </select>
                 </td>
                 <td>
                   <select v-model="time.tutor_id" id='tutor' class='display'>
-                    <option disabled value="">Please select one</option>
+                    <option disabled value="">Please select tutor</option>
                     <option v-for="tutor in tutorsOnSupa" :key="tutor.id" :value="tutor.id">{{ tutor.id }} {{ tutor.name }}</option>
                   </select>
                 </td>
@@ -198,7 +237,7 @@ const createForm = ref(false);
     </div>
 </template>
 
-<style scoped>
+<style>
 .allTimes {
   align-items: center;
   display: flex;
