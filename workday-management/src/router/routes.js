@@ -52,6 +52,11 @@ const routes = [
         component: () => import("src/components/CourseIndex.vue"),
         exact: true,
       },
+      {
+        path: "/announcements",
+        component: () => import("src/components/Announcements.vue"),
+        exact: true,
+      }
     ],
   },
 
