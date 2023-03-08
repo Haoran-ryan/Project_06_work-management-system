@@ -10,7 +10,7 @@
 </template>
 <script setup>
 import { supabase } from "src/lib/supabaseClient";
-import { onBeforeMount, ref, watch } from "vue";
+import { onBeforeMount, ref, watch, onUpdated, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 import AnnouncementForm from "src/components/AnnouncementForm.vue";
@@ -38,4 +38,6 @@ const updateAnnouncement = async (newAnnouncementData) => {
     .eq("id", route.params.id);
 };
 onBeforeMount(() => getAnnouncementData());
+onMounted(getAnnouncementData);
+onUpdated(getAnnouncementData);
 </script>

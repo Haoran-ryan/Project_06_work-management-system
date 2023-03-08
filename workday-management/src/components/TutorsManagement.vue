@@ -1,5 +1,5 @@
 <script setup>
-import { ref, toRefs, defineProps, onMounted, watch } from "vue";
+import { ref, toRefs, defineProps, onMounted, watch, onUpdated } from "vue";
 import { supabase } from "../lib/supabaseClient";
 
 const props = defineProps({
@@ -27,9 +27,9 @@ async function getAllTutors() {
 watch(displayCreateForm, (newValue, oldValue) => {
   getAllTutors();
 });
-onMounted(() => {
-  getAllTutors();
-});
+
+onMounted(getAllTutors);
+onUpdated(getAllTutors);
 
 function _submitForm() {
   // inseret newTutor into Supabase
@@ -49,6 +49,15 @@ function _submitForm() {
   newTutor.email = "";
   newTutor.qualifications = "";
   newTutor.coursesQualified = "";
+}
+
+async function _handleDelete(tutorID) {
+  // console.log(tutorID);
+  const { data, error } = await supabase
+    .from("tutors")
+    .delete()
+    .eq("id", tutorID);
+  getAllTutors();
 }
 </script>
 
@@ -101,10 +110,7 @@ function _submitForm() {
               icon="edit"
               :to="{ name: 'edit', params: { id: tutor.id } }"
             />
-            <q-btn
-              icon="delete"
-              :to="{ name: 'show', params: { id: tutor.id } }"
-            />
+            <q-btn icon="delete" @click="_handleDelete(tutor.id)" />
           </q-item-section>
         </q-item>
       </q-list>
