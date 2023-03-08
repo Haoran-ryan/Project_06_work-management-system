@@ -19,7 +19,6 @@
             <q-btn
               icon="edit"
               :to="{ name: 'course_edit', params: { id: course.id } }"
-              s
             />
             <q-btn icon="delete" @click="_deleteCourse(course.id)" />
           </q-item-section>

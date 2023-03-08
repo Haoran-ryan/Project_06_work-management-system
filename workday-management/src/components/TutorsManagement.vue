@@ -81,36 +81,33 @@ function _submitForm() {
         </form>
       </div>
     </div>
-    <div v-if="!displayCreateForm">
-      <h4>All Tutors</h4>
-      <table>
-        <thead>
-          <tr>
-            <th>Tutor Name</th>
-            <th>Email</th>
-            <th>Qualifications</th>
-            <th colspan="3"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="tutor in allTutorsOnSupa" :key="tutor.id">
-            <td>{{ tutor.name }}</td>
-            <td>{{ tutor.email }}</td>
-            <td>{{ tutor.qualifications }}</td>
-            <td>
-              <router-link :to="{ name: 'show', params: { id: tutor.id } }">
-                Show
-              </router-link>
-            </td>
-            <td>
-              <router-link :to="{ name: 'edit', params: { id: tutor.id } }">
-                Edit
-              </router-link>
-            </td>
-            <td>Delete</td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="!displayCreateForm" class="q-pa-xl">
+      <h3 class="text-h5">All Tutors</h3>
+      <q-list>
+        <q-item v-for="tutor in allTutorsOnSupa" :key="tutor.id">
+          <q-item-section>
+            <q-item-label>Tutor Name: {{ tutor.name }}</q-item-label>
+            <q-item-label caption>Email: {{ tutor.email }}</q-item-label>
+            <q-item-label caption
+              >Qualifications: {{ tutor.qualifications }}</q-item-label
+            >
+          </q-item-section>
+          <q-item-section side>
+            <q-btn
+              icon="home"
+              :to="{ name: 'show', params: { id: tutor.id } }"
+            />
+            <q-btn
+              icon="edit"
+              :to="{ name: 'edit', params: { id: tutor.id } }"
+            />
+            <q-btn
+              icon="delete"
+              :to="{ name: 'show', params: { id: tutor.id } }"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
     </div>
   </div>
 </template>
