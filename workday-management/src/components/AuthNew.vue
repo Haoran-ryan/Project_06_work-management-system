@@ -42,21 +42,19 @@ const handleSignup = async () => {
 
 <template>
   <div>
-    <button @click="isSignUp = !isSignUp">
-      {{
-        isSignUp
-          ? "Don't have an account yet? Sign Up"
-          : "Already have an account? Sign In"
-      }}
-    </button>
     <form
       v-if="isSignUp"
       class="row flex-center flex"
       @submit.prevent="handleLogin"
     >
-      <div class="col-6 form-widget">
+      <div class="col-5 form-widget flex flex-center">
         <h3 class="header">Supabase + Vue 3</h3>
-        <p class="description">Sign In</p>
+        
+        
+        <div class="flex flex-center column q-pt-m">
+        <div>
+          <p class="description">Sign In</p>
+        </div>
         <div>
           <input
             class="inputField"
@@ -65,23 +63,32 @@ const handleSignup = async () => {
             placeholder="Your email"
             v-model="email"
           />
+          </div>
+          <div>
           <input
             type="password"
             required
             placeholder="Your password"
             v-model="password"
           />
+          </div>
+          <div>
+          <button type="submit" class="q-mt-md">Sign in</button>
         </div>
-        <div>
-          <button type="submit">Sign in</button>
         </div>
+        
+
+        
       </div>
     </form>
     <form v-else class="row flex-center flex" @submit.prevent="handleSignup">
-      <div class="col-6 form-widget">
+      <div class="col-5 form-widget flex flex-center">
         <h3 class="header">Supabase + Vue 3</h3>
-        <p class="description">Sign Up</p>
-        <div>
+        
+        <div class="flex flex-center column q-pt-m">
+          <div>
+          <p class="description">Sign Up</p>
+          </div>
           <input
             class="inputField"
             required
@@ -96,10 +103,22 @@ const handleSignup = async () => {
             v-model="password"
           />
         </div>
-        <div>
-          <button type="submit">Sign up</button>
-        </div>
+        
       </div>
+      <div>
+          <button type="submit" class="q-mt-md">Sign up</button>
+        </div>
     </form>
+
+    <div class="flex flex-center">
+      <button @click="isSignUp = !isSignUp" class="q-mt-l">
+        {{
+          isSignUp
+            ? "Don't have an account yet? Sign Up"
+            : "Already have an account? Sign In"
+        }}
+      </button>
+    </div>
+    
   </div>
 </template>

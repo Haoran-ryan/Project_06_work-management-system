@@ -7,6 +7,9 @@ const props = defineProps({
 });
 const { createForm } = toRefs(props);
 
+const toggleCreateForm = () => {
+      createForm.value = !createForm.value;
+    };
 
 const allTimesOnSupa = ref([]);
 async function getAllTimes() {
@@ -60,41 +63,56 @@ watch(selectedCourse, () => {
 
 
 
-const todayDate = new Date().toISOString().substr(0, 10);
-const eigthAm = '08:00';
+
+
+
 </script>
 <script>
-  export default {
-      methods: {
-          async createTime(event) {
-  const btn = event.target;
-  btn.style.display = 'none';
-  const tr = btn.parentElement;
-
-  const startDate = tr.querySelector('#start_date').value;
-  const time = tr.querySelector('#time').value;
-  const course = tr.querySelector('#course').value;
-  const tutorId = tr.querySelector('#tutor').value;
-
-  try {
-    const { data, error } = await supabase
-      .from('times')
-      .insert({ start_date: startDate, time, course, tutor_id: tutorId });
-
-    if (error) {
-      console.error(error);
-      throw new Error('Failed to create time entry');
+export default {
+  data() {
+    return {
+      eigthAm: '08:00',
+      todayDate: new Date().toISOString().substr(0, 10),
     }
+  },
+  methods: {
+      async createTime(event) {
+        const btn = event.target;
+        btn.style.display = 'none';
+        const tr = btn.parentElement;
 
-    console.log('Time entry created:', data);
-    this.$emit('time-created');
-  } catch (error) {
-    console.error(error);
-    alert('An error occurred while creating the time entry');
-  }
-}
+        const startDate = tr.querySelector('#start_date').value;
+        const time = tr.querySelector('#time').value;
+        const course = tr.querySelector('#course').value;
+        const tutorId = tr.querySelector('#tutor').value;
+        this.eigthAm = '08:00'
+        this.todayDate = new Date().toISOString().substr(0, 10)
+        try {
+          const { data, error } = await supabase
+            .from('times')
+            .insert({ start_date: startDate, time, course, tutor_id: tutorId });
+
+          if (error) {
+            console.error(error);
+            throw new Error('Failed to create time entry');
+          }
+
+          console.log('Time entry created:', data);
+          this.$emit('time-created');
+        } catch (error) {
+          console.error(error);
+          alert('An error occurred while creating the time entry');
+        }
+      },
+      cancelCreate(event) {
+        const btn = event.target;
+        const tr = btn.parentElement;
+        this.eigthAm = '08:00'
+        this.todayDate = new Date().toISOString().substr(0, 10)
+        this.$emit('time-created');
       }
   }
+}
 </script>
 
 
@@ -115,7 +133,11 @@ const eigthAm = '08:00';
           <option v-for="tutor in filteredTutors" :key="tutor.id" :value="tutor.id">{{ tutor.id }} {{ tutor.name }}</option>
         </select>
       </td>
-      <v-btn id='create'  @click='createTime($event)' width="50">Create</v-btn>
+      <v-btn id='create'  @click='createTime($event)' 
+      width="50">Create</v-btn>
+      
+      <v-btn id='cancel'  @click='cancelCreate($event)' 
+      width="50">Cancel</v-btn>
 
       
       

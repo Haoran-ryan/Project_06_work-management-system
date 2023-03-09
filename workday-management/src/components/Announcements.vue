@@ -62,7 +62,7 @@
 
 <script setup>
 import { supabase } from "src/lib/supabaseClient";
-import { reactive, onUpdated, onMounted, ref } from "vue";
+import { reactive, onUpdated, onMounted, onBeforeMount, ref } from "vue";
 
 import AnnouncementForm from "./AnnouncementForm.vue";
 
@@ -77,16 +77,18 @@ const getAllAnnouncements = async () => {
     console.log(error);
   } else {
     allAnnouncements.value = data;
+    console.log('allAnnouncements Value ? : ', allAnnouncements.value)
   }
 };
 
 // getAllAnnouncements();
+onBeforeMount(getAllAnnouncements)
 onMounted(getAllAnnouncements);
 onUpdated(getAllAnnouncements);
 
 // variable to store the new course data
 const newAnnouncement = reactive({
-  natitleme: "",
+  title: "",
   description: null,
 });
 
@@ -96,7 +98,7 @@ function _submitCreateForm() {
   const insertIntoSupabase = async function () {
     let { data, error } = await supabase.from("announcements").insert([
       {
-        title: newAnnouncement.name,
+        title: newAnnouncement.title,
         description: newAnnouncement.description,
       },
     ]);
