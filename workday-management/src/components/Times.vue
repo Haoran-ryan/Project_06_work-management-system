@@ -1,200 +1,233 @@
 <script setup>
-import { ref, toRefs, defineProps, onMounted, watch } from "vue";
-import { supabase } from "../lib/supabaseClient";
-import CreateTime from "./CreateTime.vue"
 
-// Supabase
-const timesOnSupa = ref([]);
-async function getAllTimes() {
-  let { data, error } = await supabase.from("times").select("*, tutor:tutor_id(name), course:course(name, duration)");
-
-  if (data) {
-    timesOnSupa.value = data.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
-  }
-}
-
-const tutorsOnSupa = ref([]);
-async function getAllTutors() {
-  let { data, error } = await supabase.from("tutors").select('id, name, courses_qualified');
-
-  if (data) {
-    tutorsOnSupa.value = data;
-  }
-}
+// const filteredTutors = ref([])
+// function updateTutors(time) {
+//   filteredTutors.value = tutorsOnSupa.value.filter(tutor => tutor.courses_qualified.includes(time.course.name))
+// }
 
 
-
-
-const courseDurations = ref([]);
-async function getCourseDurations() {
-  let { data, error } = await supabase.from("courses").select('name, duration');
-
-  if (data) {
-    courseDurations.value = data;
-  }
-}
-
-
-
-onMounted(() => {
-  getAllTimes();
-  getAllTutors();
-  getCourseDurations();
-});
-
-
-
-
-
-
-
-
-
-let timeDetails = {}
-let originalTime
-const editTime = function(event, time) {
-  updateTutors(time)
-  timeDetails = time
-  // Assign the time object to the plain JavaScript object timeDetails
-  originalTime = JSON.parse(JSON.stringify(time));
-  const btn = event.target;
-  btn.style.display = 'none'
-  const tr = btn.parentElement;
-  tr.querySelector('#delete').style.display = 'none'
-  tr.querySelector('#confirmEdit').style.display = 'inline-flex'
-  tr.querySelector('#cancelEdit').style.display = 'inline-flex'
-  for (let child of tr.children) {
-    child.style.pointerEvents = 'auto';
-  }
-  const inputs = tr.querySelectorAll('input');
-  const selects = tr.querySelectorAll('select');
-  for (let input of inputs) {
-    input.classList.remove('display');
-  }
-  for (let select of selects) {
-    select.classList.remove('display');
-  }
-}
-const cancelEdit = function(event, time) {
-  const btn = event.target;
-  btn.style.display = 'none'
-  const tr = btn.parentElement;
-  const inputs = tr.querySelectorAll('input');
-  const selects = tr.querySelectorAll('select');
-  for (let input of inputs) {
-    input.classList.add('display');
-  }
-  for (let select of selects) {
-    select.classList.add('display');
-  }
-  tr.querySelector('#confirmEdit').style.display = 'none'
-  tr.querySelector('#edit').style.display = 'inline-flex'
-  tr.querySelector('#delete').style.display = 'inline-flex'
-  for (let child of tr.children) {
-    child.style.pointerEvents = 'none';
-  } 
-  tr.querySelector('#edit').style.pointerEvents = 'auto';
-  tr.querySelector('#delete').style.pointerEvents = 'auto';
- 
-  time.start_date = originalTime.start_date
-  time.time = originalTime.time
-  time.course.name = originalTime.course.name
-  time.tutor_id = originalTime.tutor_id
-
-  tr.querySelector('#start_date').value = originalTime.start_date
-  tr.querySelector('#time').value = originalTime.time
-  tr.querySelector('#course').value = originalTime.course.name
-  tr.querySelector('#tutor').value = originalTime.tutor_id
-}
-
-
-const deleteTime = async (timeId) => {
-  try {
-    await supabase.from('times').delete().eq('id', timeId);
-    timesOnSupa.value = timesOnSupa.value.filter((time) => time.id != timeId);
-  } catch (error) {
-    console.log('error', error);
-  }
-};
-
-const updateTime = async (event,timeId) => {
-  const btn = event.target;
-  const tr = btn.parentElement;
-  let qualifiedTutorIds = []
-  for (let tutor of tutorsOnSupa.value) {
-    if (tutor.courses_qualified.includes(timeDetails.course.name)) {
-      qualifiedTutorIds.push(tutor.id)
-    }
-  }
-  if (!qualifiedTutorIds.includes(parseInt(tr.querySelector('#tutor').value))) {
-    let tutorName = ''
-    for (let tutor of tutorsOnSupa.value) {
-      if (tutor.id == timeDetails.tutor_id) {
-        tutorName = tutor.name
-      }
-    }
-    alert(`${tutorName} is not qualified to teach ${timeDetails.course.name}!`)
-
-    // tr.querySelector('#start_date').value = originalTime.start_date
-    // tr.querySelector('#time').value = originalTime.time
-    // tr.querySelector('#course').value = originalTime.course.name
-    // tr.querySelector('#tutor').value = originalTime.tutor_id
-
-    return
-  }
-  btn.style.display = 'none'
-  const inputs = tr.querySelectorAll('input');
-  const selects = tr.querySelectorAll('select');
-  for (let input of inputs) {
-    input.classList.add('display');
-  }
-  for (let select of selects) {
-    select.classList.add('display');
-  }
-  for (let child of tr.children) {
-    child.style.pointerEvents = 'none';
-  } 
-  tr.querySelector('#cancelEdit').style.display = 'none'
-  tr.querySelector('#delete').style.display = 'inline-flex'
-  tr.querySelector('#edit').style.display = 'inline-flex'
-  btn.style.pointerEvents = 'auto';
-  tr.querySelector('#cancelEdit').style.pointerEvents = 'auto';
-  tr.querySelector('#delete').style.pointerEvents = 'auto';
-  tr.querySelector('#edit').style.pointerEvents = 'auto';
-
-  try {
-    await supabase.from('times')
-    .update({ start_date: tr.querySelector('#start_date').value,
-              time: tr.querySelector('#time').value,
-              course: tr.querySelector('#course').value,
-              tutor_id: tr.querySelector('#tutor').value
-            })
-    .eq('id', timeId);
-  } catch (error) {
-    console.log('error', error);
-  }
-};
-
-const createForm = ref(false);
-
-
-const filteredTutors = ref([])
-function updateTutors(time) {
-  filteredTutors.value = tutorsOnSupa.value.filter(tutor => tutor.courses_qualified.includes(time.course.name))
-}
-
-// watch(timeDetails.course, () => {
-//   if (timeDetails.course) {
-//     updateTutors()
-//   } else {
-//     filteredTutors.value = []
-//   }
-// })
 
 
 </script>
 
+<script>
+import { ref, watch } from "vue";
+import { supabase } from "../lib/supabaseClient";
+import CreateTime from "./CreateTime.vue";
 
+export default {
+  components: {
+    CreateTime,
+  },
+  data() {
+    return {
+      timesOnSupa: [],
+      tutorsOnSupa: [],
+      courseDurations: [],
+      tutorOption: tutor => `${tutor.name} (ID: ${tutor.id})`,
+      timeDetails: {},
+      originalTime: '',
+      createForm: ref(false),
+      filteredTutors: [],
+      selectedCourse: '',
+    }
+  },
+  watch: {
+    timeDetails(newVal, oldVal) {
+      if (newVal) {
+        alert('h')
+        this.updateTutors()
+      } else {
+        this.filteredTutors = []
+      }
+    },
+  },
+  methods: {
+    async getAllTimes() {
+      let { data, error } = await supabase
+        .from("times")
+        .select("*, tutor:tutor_id(name), course:course(name, duration)");
+
+      if (data) {
+        this.timesOnSupa = data.sort(
+          (a, b) => new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`)
+        );
+        this.timesOnSupa = data.sort(
+          (a, b) => new Date(a.start_date) - new Date(b.start_date)
+        );
+      }
+    },
+    async getAllTimesAfterCreate() {
+      this.$data.createForm = !this.$data.createForm;
+      let { data, error } = await supabase
+        .from("times")
+        .select("*, tutor:tutor_id(name), course:course(name, duration)");
+      
+      if (data) {
+        this.timesOnSupa = data.sort(
+          (a, b) => new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`)
+        );
+        this.timesOnSupa = data.sort(
+          (a, b) => new Date(a.start_date) - new Date(b.start_date)
+        );
+      }
+    },
+    async getAllTutors() {
+      let { data, error } = await supabase.from("tutors").select("id, name, courses_qualified");
+
+      if (data) {
+        this.tutorsOnSupa = data;
+      }
+      this.filteredTutors = this.tutorsOnSupa
+    },
+    async getCourseDurations() {
+      let { data, error } = await supabase.from("courses").select("name, duration");
+
+      if (data) {
+        this.courseDurations = data;
+      }
+    },
+    getQualifiedCourses(coursesqualified) {
+      const courses = coursesqualified;
+      if (courses.length === 1) {
+        return courses[0];
+      } else if (courses.length === 2) {
+        return courses.join(' and ');
+      } else {
+        const lastCourse = courses.pop();
+        return `${courses.join(', ')} and ${lastCourse}`;
+      }
+    },
+    editTime(event, time) {
+      // Change the tutor text to a different format
+      this.tutorOption = tutor => `${tutor.name} (ID: ${tutor.id}) qualified for ${this.getQualifiedCourses(tutor.courses_qualified)}`;
+      this.timeDetails = time
+      // Assign the time object to the plain JavaScript object timeDetails
+      this.originalTime = JSON.parse(JSON.stringify(time));
+      const btn = event.target;
+      btn.style.display = 'none'
+      const tr = btn.parentElement;
+      tr.querySelector('#delete').style.display = 'none'
+      tr.querySelector('#confirmEdit').style.display = 'inline-flex'
+      tr.querySelector('#cancelEdit').style.display = 'inline-flex'
+      for (let child of tr.children) {
+        child.style.pointerEvents = 'auto';
+      }
+      const inputs = tr.querySelectorAll('input');
+      const selects = tr.querySelectorAll('select');
+      for (let input of inputs) {
+        input.classList.remove('display');
+      }
+      for (let select of selects) {
+        select.classList.remove('display');
+      }
+
+    },
+    cancelEdit(event, time) {
+      const btn = event.target;
+      btn.style.display = 'none'
+      const tr = btn.parentElement;
+      const inputs = tr.querySelectorAll('input');
+      const selects = tr.querySelectorAll('select');
+      for (let input of inputs) {
+        input.classList.add('display');
+      }
+      for (let select of selects) {
+        select.classList.add('display');
+      }
+      tr.querySelector('#confirmEdit').style.display = 'none'
+      tr.querySelector('#edit').style.display = 'inline-flex'
+      tr.querySelector('#delete').style.display = 'inline-flex'
+      for (let child of tr.children) {
+        child.style.pointerEvents = 'none';
+      } 
+      tr.querySelector('#edit').style.pointerEvents = 'auto';
+      tr.querySelector('#delete').style.pointerEvents = 'auto';
+    
+      time.start_date = this.originalTime.start_date
+      time.time = this.originalTime.time
+      time.course.name = this.originalTime.course.name
+      time.tutor_id = this.originalTime.tutor_id
+
+      tr.querySelector('#start_date').value = this.originalTime.start_date
+      tr.querySelector('#time').value = this.originalTime.time
+      tr.querySelector('#course').value = this.originalTime.course.name
+      tr.querySelector('#tutor').value = this.originalTime.tutor_id
+
+      this.tutorOption = tutor => `${tutor.name} (ID: ${tutor.id})`;
+    },
+    async updateTime(event, timeId) {
+      const btn = event.target;
+      const tr = btn.parentElement;
+      let qualifiedTutorIds = []
+      for (let tutor of this.tutorsOnSupa) {
+        if (tutor.courses_qualified.includes(this.timeDetails.course.name)) {
+          qualifiedTutorIds.push(tutor.id)
+        }
+      }
+      if (!qualifiedTutorIds.includes(parseInt(tr.querySelector('#tutor').value))) {
+        let tutorName = ''
+        for (let tutor of this.tutorsOnSupa) {
+          if (tutor.id == this.timeDetails.tutor_id) {
+            tutorName = tutor.name
+          }
+        }
+        return alert(`${tutorName} is not qualified to teach ${this.timeDetails.course.name}!`)
+      }
+      btn.style.display = 'none'
+      const inputs = tr.querySelectorAll('input');
+      const selects = tr.querySelectorAll('select');
+      for (let input of inputs) {
+        input.classList.add('display');
+      }
+      for (let select of selects) {
+        select.classList.add('display');
+      }
+      for (let child of tr.children) {
+        child.style.pointerEvents = 'none';
+      } 
+      tr.querySelector('#cancelEdit').style.display = 'none'
+      tr.querySelector('#delete').style.display = 'inline-flex'
+      tr.querySelector('#edit').style.display = 'inline-flex'
+      btn.style.pointerEvents = 'auto';
+      tr.querySelector('#cancelEdit').style.pointerEvents = 'auto';
+      tr.querySelector('#delete').style.pointerEvents = 'auto';
+      tr.querySelector('#edit').style.pointerEvents = 'auto';
+      
+      try {
+        await supabase.from('times')
+        .update({ start_date: tr.querySelector('#start_date').value,
+                  time: tr.querySelector('#time').value,
+                  course: tr.querySelector('#course').value,
+                  tutor_id: tr.querySelector('#tutor').value
+                })
+        .eq('id', timeId);
+      } catch (error) {
+        console.log('error', error);
+      }
+    },
+    async deleteTime(timeId) {
+      const confirmed = window.confirm('Are you sure you want to delete this time record?');
+      if (!confirmed) {
+        return
+      }
+      try {
+        await supabase.from('times').delete().eq('id', timeId);
+        this.timesOnSupa = this.timesOnSupa.filter((time) => time.id != timeId);
+      } catch (error) {
+        console.log('error', error);
+      }
+    },
+    updateTutors() {
+      this.filteredTutors = this.tutorsOnSupa.filter(tutor => tutor.courses_qualified.includes(this.timeDetails.course.name))
+    }
+  },
+  async mounted() {
+    await Promise.all([this.getAllTimes(), this.getAllTutors(), this.getCourseDurations()]);
+  },
+}
+
+</script>
 <template>
     <div>
         <div class=allTimes><h4>All Times</h4><v-btn id='moreTime' @click="createForm = !createForm"><q-icon name="more_time" /></v-btn></div>
@@ -209,7 +242,7 @@ function updateTutors(time) {
             </tr>
             </thead>
             <tbody>
-             <CreateTime :createForm="createForm" @time-created="getAllTimes" />
+             <CreateTime :createForm="createForm" @time-created="getAllTimesAfterCreate" />
             <tr v-for="time in timesOnSupa" :key="time.id">
                 <td><input type="date" v-model="time.start_date" id='start_date' class='display'></td>
                 <td><input type="time" v-model="time.time" id='time' class='display'></td>
@@ -222,7 +255,12 @@ function updateTutors(time) {
                 <td>
                   <select v-model="time.tutor_id" id='tutor' class='display'>
                     <option disabled value="">Please select tutor</option>
-                    <option v-for="tutor in tutorsOnSupa" :key="tutor.id" :value="tutor.id">{{ tutor.id }} {{ tutor.name }}</option>
+                    <option :value="time.tutor_id"> {{time.tutor.name}} (ID: {{ time.tutor_id }})</option>
+                    <option v-for="tutor in filteredTutors" :key="tutor.id" :value="tutor.id">
+                      <!-- <span v-if="tutor.id != time.tutor_id"> -->
+                        {{tutor.name}} (ID: {{ tutor.id }})
+                      <!-- </span> -->
+                    </option>
                   </select>
                 </td>
                 <v-btn id='edit' width="50" @click='editTime($event, time)'>Edit</v-btn>
