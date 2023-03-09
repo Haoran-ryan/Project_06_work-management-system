@@ -78,12 +78,13 @@ async function _handleActiveStatus(tutorID, currentStatus) {
 </script>
 
 <template>
-  <div>
+
     <div v-if="displayCreateForm">
-      <h4>Create a tutor</h4>
-      <div>
-        <form @submit.prevent="_submitForm">
-          <label for="name">Name: </label>
+      <div class="column flex-center">
+        <h5>Create a tutor</h5>
+        <form @submit.prevent="_submitForm" class="flex-center">
+          <div class="column q-pa-md">
+            <label for="name">Name: </label>
           <input type="text" id="name" v-model="newTutor.name" />
 
           <label for="email">Email: </label>
@@ -102,10 +103,14 @@ async function _handleActiveStatus(tutorID, currentStatus) {
             id="courses-qualified"
             v-model="newTutor.coursesQualified"
           />
-          <button type="submit">Submit</button>
+          </div>
+          <button type="submit">Create</button>
         </form>
       </div>
     </div>
+    <div v-if="!displayCreateForm" class="q-pa-xl">
+      
+    <q-separator></q-separator>
     <div v-if="displayCreateForm == false" class="q-pa-xl">
       <h3 class="text-h5">
         {{ displayCurrentTutors ? "Current Tutors" : "All Tutors" }}
@@ -119,6 +124,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
       <q-list v-if="displayCurrentTutors == false">
         <q-item v-for="tutor in allTutorsOnSupa" :key="tutor.id">
           <q-item-section>
+            
             <q-item-label>Tutor Name: {{ tutor.name }}</q-item-label>
             <q-item-label>Email: {{ tutor.email }}</q-item-label>
             <q-item-label
@@ -129,6 +135,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
               {{ tutor.active ? "Current" : "Not Current" }}</q-item-label
             >
           </q-item-section>
+
           <q-item-section side>
             <q-btn
               icon="home"
@@ -183,6 +190,10 @@ async function _handleActiveStatus(tutorID, currentStatus) {
 </template>
 
 <style>
+h5 {
+  margin-bottom: 10px;
+}
+
 form {
   display: flex;
   flex-direction: column;

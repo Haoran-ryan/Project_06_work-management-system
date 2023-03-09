@@ -11,7 +11,7 @@
           icon="menu"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title> Turonet </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
@@ -44,7 +44,7 @@
             <q-icon name="chat" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Classe Management</q-item-label>
+            <q-item-label>Class Management</q-item-label>
             <q-item-label caption>Manage all the current classes</q-item-label>
           </q-item-section>
         </q-item>

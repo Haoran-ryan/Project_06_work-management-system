@@ -1,5 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container column flex-center">
+    <div class="column flex-center">
+    <h3>Course Management</h3>
+
     <button
       @click="
         () => {
@@ -10,10 +13,16 @@
     >
       {{ displayCourses ? "Create Course" : "All Courses" }}
     </button>
+    </div>
+    
+    
+
+    <q-separator inset></q-separator>
 
     <div class="q-pa-xl" v-if="allCourses && displayCourses">
       <h3 class="text-h5">All Courses</h3>
       <q-list>
+        <q-separator></q-separator>
         <q-item v-for="course in allCourses.value" :key="course.id">
           <q-item-section>
             <q-item-label>Course Name: {{ course.name }}</q-item-label>
@@ -32,32 +41,47 @@
         </q-item>
       </q-list>
     </div>
+    
 
-    <form v-else @submit.prevent="_submitCreateForm">
-      <h3 class="text-h5">Create A Course</h3>
+    <form v-else @submit.prevent="_submitCreateForm" class="flex flex-center">
+      <h5>Create A Course</h5>
+
       <div class="q-pa-md">
-        <div class="q-gutter-md" style="max-width: 300px">
-          <q-input
-            filled
-            label="Course Name"
-            type="text"
-            v-model="newCourse.name"
-          />
-          <q-input
-            filled
-            label="Course Description"
-            type="text"
-            v-model="newCourse.description"
-          />
-          <q-input
-            filled
-            label="Course Duration"
-            type="number"
-            v-model="newCourse.duration"
-          />
+        <div style="max-width: 300px">
+          
+          <label for="name">Course Name: </label>
+          <div>
+            <input
+              filled
+              label="Course Name"
+              type="text"
+              v-model="newCourse.name"
+            />
+          </div>
+          
+          <label for="description">Course Description:</label>
+          <div>
+            <input
+              filled
+              label="Course Description"
+              type="text"
+              v-model="newCourse.description"
+            />
+          </div>
+          
+          <label for="duration">Course Duration</label>
+          <div>
+            <input
+              filled
+              label="Course Duration"
+              type="number"
+              v-model="newCourse.duration"
+            />
+          </div>
+          
         </div>
       </div>
-      <div class="q-pa-md q-gutter-sm">
+      <!-- <div class="q-pa-md q-gutter-sm">
         <q-btn
           style="background: #ff0080; color: white"
           label="Create"
@@ -71,7 +95,12 @@
           icon="directions"
           @click="displayCourses = true"
         />
+      </div> -->
+
+      <div>
+        <button type="submit">Create</button>
       </div>
+      
     </form>
   </div>
 </template>
