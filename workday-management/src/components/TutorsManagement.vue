@@ -14,6 +14,8 @@ const newTutor = {
   coursesQualified: "",
 };
 
+const displayCurrentTutors = ref(false);
+
 // Supabase
 const allTutorsOnSupa = ref([]);
 async function getAllTutors() {
@@ -24,12 +26,26 @@ async function getAllTutors() {
   }
 }
 
+const allCurrentTotors = ref([]);
+async function getCurrentTutors() {
+  let { data, error } = await supabase
+    .from("tutors")
+    .select()
+    .eq("active", true);
+  if (data) {
+    allCurrentTotors.value = data;
+    console.log(allCurrentTotors.value);
+  }
+}
+
 watch(displayCreateForm, (newValue, oldValue) => {
   getAllTutors();
 });
 
 onMounted(getAllTutors);
 onUpdated(getAllTutors);
+onMounted(getCurrentTutors);
+onUpdated(getCurrentTutors);
 
 function _submitForm() {
   // inseret newTutor into Supabase
@@ -89,9 +105,17 @@ async function _handleActiveStatus(tutorID, currentStatus) {
         </form>
       </div>
     </div>
-    <div v-if="!displayCreateForm" class="q-pa-xl">
-      <h3 class="text-h5">All Tutors</h3>
-      <q-list>
+    <div v-if="displayCreateForm == false" class="q-pa-xl">
+      <h3 class="text-h5">
+        {{ displayCurrentTutors ? "Current Tutors" : "All Tutors" }}
+      </h3>
+      <q-btn
+        push
+        color="primary"
+        label="Current Tutors"
+        @click="displayCurrentTutors = !displayCurrentTutors"
+      />
+      <q-list v-if="displayCurrentTutors == false">
         <q-item v-for="tutor in allTutorsOnSupa" :key="tutor.id">
           <q-item-section>
             <q-item-label>Tutor Name: {{ tutor.name }}</q-item-label>
@@ -120,6 +144,39 @@ async function _handleActiveStatus(tutorID, currentStatus) {
           </q-item-section>
         </q-item>
       </q-list>
+      <!-- to display all current tutors -->
+      <div
+        class="all-current-tutors"
+        v-if="displayCreateForm == false && displayCurrentTutors == true"
+      >
+        <div class="q-pa-md flex justify-center">
+          <div style="max-width: 90%; width: 300px">
+            <q-intersection
+              v-for="currentTutor in allCurrentTotors"
+              :key="currentTutor.id"
+              transition="flip-right"
+              class="example-item"
+            >
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-avatar color="primary" text-color="white"> Q </q-avatar>
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>Name: {{ currentTutor.name }}</q-item-label>
+                  <q-item-label caption lines="1"
+                    >Email: {{ currentTutor.email }}</q-item-label
+                  >
+                </q-item-section>
+
+                <q-item-section side>
+                  <q-icon name="chat_bubble" color="green" />
+                </q-item-section>
+              </q-item>
+            </q-intersection>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
