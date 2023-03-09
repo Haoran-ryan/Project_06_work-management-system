@@ -253,8 +253,36 @@ export default {
         }
         }, 100);
       }
-      
-      
+    },
+    filter(event) {
+      event.preventDefault()
+      const btn = event.target;
+      const form = btn.parentElement;
+      const select = form.querySelector('select');
+      const tbody = document.querySelector('tbody')
+      const trs = tbody.querySelectorAll('tr')
+      if (select.value.length > 0) {
+        for (let tr of trs) {
+          tr.style.display = 'inline'
+          const course = tr.querySelector('#course')
+          if (course.value != select.value) {
+            tr.style.display = 'none'
+          }
+        }
+      }
+    },
+    showAll(event) {
+      event.preventDefault()
+      const btn = event.target;
+      const form = btn.parentElement;
+      const select = form.querySelector('select');
+      select.value = ''
+      const tbody = document.querySelector('tbody')
+      const trs = tbody.querySelectorAll('tr')
+      for (let tr of trs) {
+            tr.style.display = 'inline'
+      }
+       
     }
   },
   async mounted() {
@@ -264,8 +292,19 @@ export default {
 
 </script>
 <template>
-    <div>
-        <div class=allTimes><h4>All Times</h4><v-btn id='moreTime' @click="createForm = !createForm"><q-icon name="more_time" /></v-btn></div>
+    <div class="timetable">
+        <div class="allTimes"><h4>Timetable</h4><v-btn id='moreTime' @click="createForm = !createForm"><q-icon name="more_time" /></v-btn></div>
+        <div>
+          
+          <form class="filter" action="">
+            <p>Fliter by course: </p>
+            <select>
+              <option value="">Please select course</option>
+              <option v-for="course in courseDurations" :key="course.name" :value="course.name">{{ course.name }}</option>
+            </select>
+            <button @click="filter($event)">Filter</button><button @click="showAll($event)">Show all</button>
+          </form>
+        </div>
         <table>
             <thead>
             <tr>
@@ -312,6 +351,13 @@ export default {
 </template>
 
 <style>
+.timetable {
+  display: flex;
+  flex-direction: column;
+}
+.filter {
+  display: inline;
+}
 .allTimes {
   align-items: center;
   display: flex;
@@ -331,6 +377,13 @@ td {
   display: none;
 }
 
+v-btn {
+  cursor: pointer;
+}
+
+input, select {
+  cursor: pointer;
+}
 
 input.display {
   border: none;
