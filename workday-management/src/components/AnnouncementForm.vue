@@ -45,6 +45,7 @@ export default {
     const { announcementData } = toRefs(props);
     // const { title, description } = announcementData.value[0];
 
+
     const title = ref(announcementData.value[0].title);
     const description = ref(announcementData.value[0].description);
 
