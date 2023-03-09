@@ -5,12 +5,12 @@ import { supabase } from "../lib/supabaseClient";
 const props = defineProps({
   displayCreateForm: Boolean,
 });
-const { displayCreateForm } = toRefs(props);
+let { displayCreateForm } = toRefs(props);
 
 const newTutor = {
   name: "",
   email: "",
-  qualifications: "",
+  qualification: "",
   coursesQualified: "",
 };
 
@@ -54,12 +54,13 @@ function _submitForm() {
       {
         name: newTutor.name,
         email: newTutor.email,
-        qualifications: newTutor.qualifications,
-        courses_qualified: newTutor.coursesQualified,
+        qualification: newTutor.qualification,
+        courses_qualified: `{${newTutor.coursesQualified}}`,
       },
     ]);
   };
   insertIntoSupabase();
+  displayCreateForm.value = false;
   // clear the form
   newTutor.name = "";
   newTutor.email = "";
@@ -93,7 +94,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
           <input
             type="text"
             name="qualifications"
-            v-model="newTutor.qualifications"
+            v-model="newTutor.qualification"
           />
 
           <label for="courses-qualified">Courses Qualified to Deliver: </label>
@@ -127,7 +128,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
             <q-item-label>Tutor Name: {{ tutor.name }}</q-item-label>
             <q-item-label>Email: {{ tutor.email }}</q-item-label>
             <q-item-label
-              >Qualifications: {{ tutor.qualifications }}</q-item-label
+              >Qualifications: {{ tutor.qualification }}</q-item-label
             >
             <q-item-label caption
               >Status:
