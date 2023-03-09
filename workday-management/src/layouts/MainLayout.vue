@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { store } from "src/store.js";
 import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "vue-router";
@@ -113,6 +113,7 @@ export default {
     supabase.auth.onAuthStateChange((event, session) => {
       if (event == "SIGNED_OUT") {
         store.state.user = null;
+        alert(window.location.href)
       } else {
         store.state.user = session.user;
         router.push("/");
@@ -126,4 +127,24 @@ export default {
     };
   },
 };
+
+// const checkLogin = function() {
+//   setTimeout(() => {
+//     if(store.state.user){
+//     if (store.state.user.data.session === null) {
+//       alert(window.location.href)
+
+//     }
+//     else {
+//       alert('logged in')
+//     }
+//   }
+//   }, 500);
+  
+// }
+// checkLogin();
+// onMounted(() => {
+//   checkLogin();
+// });
+
 </script>
