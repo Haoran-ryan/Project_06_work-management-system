@@ -1,8 +1,8 @@
 import TutorShow from "src/components/TutorShow.vue";
 import TutorEdit from "src/components/TutorEdit.vue";
 import CourseIndex from "src/components/CourseIndex.vue";
-import Announcements from "src/components/Announcements.vue"
-import TutorsManagement from "src/components/TutorsManagement.vue";
+import Announcements from "src/components/Announcements.vue";
+import ManagerDashboard from "src/components/ManagerDashboard.vue";
 
 const routes = [
   {
@@ -28,7 +28,7 @@ const routes = [
       {
         path: "/manager",
         name: "all_tutors",
-        component: TutorsManagement,
+        component: ManagerDashboard,
         exact: true,
       },
       {
