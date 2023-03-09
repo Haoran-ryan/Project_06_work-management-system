@@ -2,7 +2,7 @@
   <div class="container column flex-center">
     <h3>Announcements</h3>
 
-    <button
+    <button class="bg-blue-8"
       @click="
         () => {
           displayAnnouncements = !displayAnnouncements;

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>Edit Tutor</h1>
+  <div class="column flex-center">
+    <h3>Edit Tutor</h3>
     <TutorForm
       v-if="tutorData"
       :tutorData="tutorData"

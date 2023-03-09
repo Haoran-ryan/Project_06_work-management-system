@@ -76,7 +76,7 @@ async function signOut() {
 </script>
 
 <template>
-  <form class="form-widget" @submit.prevent="updateProfile">
+  <form class="form-widget column flex-center" @submit.prevent="updateProfile">
     <div>
       <label for="email">Email</label>
       <input id="email" type="text" :value="session.user.email" disabled />
@@ -92,15 +92,16 @@ async function signOut() {
 
     <div>
       <input
+        style="color: white"
         type="submit"
-        class="button primary block"
+        class="button primary block bg-blue-8"
         :value="loading ? 'Loading ...' : 'Update'"
         :disabled="loading"
       />
     </div>
 
     <div>
-      <button class="button block" @click="signOut" :disabled="loading">
+      <button style="color: black" class="button primary block bg-grey-4" @click="signOut" :disabled="loading">
         Sign Out
       </button>
     </div>

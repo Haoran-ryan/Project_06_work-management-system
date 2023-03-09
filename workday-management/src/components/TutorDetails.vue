@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div class="q-pa-md row items-start q-gutter-md">
+    <div class="q-pa-md column flex-center items-start q-gutter-md">
       <q-card class="my-card" flat bordered>
         <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" />
 
         <q-card-section>
-          <div class="text-overline text-orange-9">Tutuor Profile</div>
+          <div class="text-overline text-blue-8">Tutor Profile</div>
           <div class="text-h5 q-mt-sm q-mb-xs">{{ tutorData.name }}</div>
           <div class="q-pa-sm">
             Email:

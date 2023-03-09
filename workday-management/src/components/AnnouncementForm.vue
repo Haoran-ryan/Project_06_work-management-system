@@ -1,11 +1,10 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
-    <q-form @submit.prevent="handleSubmit" class="q-gutter-md">
+    <q-form @submit.prevent="handleSubmit" class="column flex-center">
       <q-input
         filled
         v-model="title"
         label="Title"
-        hint="the announcement title"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
@@ -14,7 +13,6 @@
         filled
         v-model="description"
         label="Description"
-        hint="the announcement description"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
