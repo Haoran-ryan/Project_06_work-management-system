@@ -1,23 +1,41 @@
 <template>
   <div class="container">
-    <button @click="displayAnnouncements = !displayAnnouncements">
+    <button
+      @click="
+        () => {
+          displayAnnouncements = !displayAnnouncements;
+          getAllAnnouncements();
+        }
+      "
+    >
       {{ displayAnnouncements ? "Create Announcement" : "All Announcements" }}
     </button>
 
     <div class="q-pa-xl" v-if="allAnnouncements && displayAnnouncements">
       <h3 class="text-h5">All Announcements</h3>
       <q-list>
-        <q-item v-for="announcement in allAnnouncements.value" :key="announcement.id">
+        <q-item
+          v-for="announcement in allAnnouncements.value"
+          :key="announcement.id"
+        >
           <q-item-section>
             <q-item-label>Title: {{ announcement.title }}</q-item-label>
-            <q-item-label caption>Description: {{ announcement.description }}</q-item-label>
+            <q-item-label caption
+              >Description: {{ announcement.description }}</q-item-label
+            >
           </q-item-section>
           <q-item-section side>
             <q-btn
               icon="edit"
-              :to="{ name: 'announcement_edit', params: { id: announcement.id } }"
+              :to="{
+                name: 'announcement_edit',
+                params: { id: announcement.id },
+              }"
             />
-            <q-btn icon="delete" @click="_deleteAnnouncement(announcement.id)" />
+            <q-btn
+              icon="delete"
+              @click="_deleteAnnouncement(announcement.id)"
+            />
           </q-item-section>
         </q-item>
       </q-list>
@@ -62,7 +80,7 @@
 
 <script setup>
 import { supabase } from "src/lib/supabaseClient";
-import { reactive, onUpdated, onMounted, ref } from "vue";
+import { reactive, onUpdated, onMounted, onBeforeMount, ref } from "vue";
 
 import AnnouncementForm from "./AnnouncementForm.vue";
 
@@ -77,16 +95,18 @@ const getAllAnnouncements = async () => {
     console.log(error);
   } else {
     allAnnouncements.value = data;
+    console.log("allAnnouncements Value ? : ", allAnnouncements.value);
   }
 };
 
 // getAllAnnouncements();
+onBeforeMount(getAllAnnouncements);
 onMounted(getAllAnnouncements);
 onUpdated(getAllAnnouncements);
 
 // variable to store the new course data
 const newAnnouncement = reactive({
-  natitleme: "",
+  title: "",
   description: null,
 });
 
@@ -96,7 +116,7 @@ function _submitCreateForm() {
   const insertIntoSupabase = async function () {
     let { data, error } = await supabase.from("announcements").insert([
       {
-        title: newAnnouncement.name,
+        title: newAnnouncement.title,
         description: newAnnouncement.description,
       },
     ]);
@@ -109,8 +129,10 @@ function _submitCreateForm() {
 }
 
 async function _deleteAnnouncement(id) {
-  const { data, error } = await supabase.from("announcements").delete().eq("id", id);
+  const { data, error } = await supabase
+    .from("announcements")
+    .delete()
+    .eq("id", id);
   getAllAnnouncements();
 }
 </script>
-

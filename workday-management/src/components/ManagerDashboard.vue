@@ -3,17 +3,20 @@ import TutorsManagement from "./TutorsManagement.vue";
 import { ref, watch } from "vue";
 
 const displayCreateForm = ref(false);
+// const diplayActiveTutors = ref(false);
 </script>
 
 <template>
   <div>
     <div>
-      <h3>Tutor Management</h3>
-      <p>Click the button to add a new tutor or list all tutors</p>
+      <h4>Tutor Management</h4>
       <div class="tutor-buttons">
         <button @click="displayCreateForm = !displayCreateForm">
-          {{ displayCreateForm ? "Add A Tutor" : "List All Tutors" }}
+          {{ displayCreateForm ? "List All Tutors" : "Add A Tutor" }}
         </button>
+        <!-- <button @click="diplayActiveTutors = !diplayActiveTutors">
+          {{ diplayActiveTutors ? "All Tutors" : "Current Tutors Only" }}
+        </button> -->
       </div>
     </div>
     <TutorsManagement :displayCreateForm="displayCreateForm" />

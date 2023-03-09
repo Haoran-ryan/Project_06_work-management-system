@@ -39,5 +39,5 @@ const updateAnnouncement = async (newAnnouncementData) => {
 };
 onBeforeMount(() => getAnnouncementData());
 onMounted(getAnnouncementData);
-onUpdated(getAnnouncementData);
+onUpdated(getAnnouncementData)
 </script>
