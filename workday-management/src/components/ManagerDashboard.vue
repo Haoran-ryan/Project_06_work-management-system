@@ -12,7 +12,7 @@ const displayCreateForm = ref(false);
       <h3>Tutor Management</h3>
       <p>Click the button to add a new tutor or list all tutors</p>
       <div class="tutor-buttons">
-        <button @click="displayCreateForm = !displayCreateForm">
+        <button class="bg-blue-8" @click="displayCreateForm = !displayCreateForm">
           {{ displayCreateForm ? "All Tutors" : "Add a Tutor" }}
         </button>
         <!-- <button @click="diplayActiveTutors = !diplayActiveTutors">

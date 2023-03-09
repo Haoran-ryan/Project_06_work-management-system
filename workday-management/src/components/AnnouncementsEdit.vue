@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="column flex-center">
     <h3>Edit Announcement</h3>
     <AnnouncementForm
       v-if="announcementData"

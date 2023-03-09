@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" class="column flex-center">
       <q-input v-model="name" label="Name" filled class="q-mb-md" />
 
       <q-input v-model="email" label="Email" filled class="q-mb-md" />

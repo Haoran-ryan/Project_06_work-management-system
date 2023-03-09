@@ -104,7 +104,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
             v-model="newTutor.coursesQualified"
           />
           </div>
-          <button type="submit">Create</button>
+          <button class="bg-blue-8" type="submit">Create</button>
         </form>
       </div>
     </div>

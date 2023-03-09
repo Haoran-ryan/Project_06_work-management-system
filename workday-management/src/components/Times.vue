@@ -305,10 +305,10 @@ export default {
               <option value="">Please select course</option>
               <option v-for="course in courseDurations" :key="course.name" :value="course.name">{{ course.name }}</option>
             </select>
-            <button @click="filter($event)">Filter</button><button @click="showAll($event)">Show all</button>
+            <button class="bg-blue-8 q-mx-md" @click="filter($event)">Filter</button><button class="bg-blue-8" @click="showAll($event)">Show all</button>
           </form>
         </div>
-        <table>
+        <table class="q-mt-md">
             <thead>
             <tr>
                 <th>Commenced Date </th>
@@ -341,10 +341,10 @@ export default {
                     </option> -->
                   </select>
                 </td>
-                <v-btn id='edit' width="50" @click='editTime($event, time)'>Edit</v-btn>
+                <v-btn class="q-px-md" id='edit' width="50" @click='editTime($event, time)'>Edit</v-btn>
                 <v-btn id='delete'  @click='deleteTime(time.id)' width="50">Delete</v-btn>
-                <v-btn id='confirmEdit' @click='updateTime($event, time.id)' width="50">Confirm</v-btn>
-                <v-btn id='cancelEdit' @click='cancelEdit($event, time)' width="50">Cancel</v-btn>
+                <v-btn class="q-px-md" id='confirmEdit' @click='updateTime($event, time.id)' width="50">Confirm</v-btn>
+                <v-btn class="q-px-md" id='cancelEdit' @click='cancelEdit($event, time)' width="50">Cancel</v-btn>
                 <v-btn id='createTime' width="50">Create</v-btn>
                 <v-btn id='cancelCreate' @click='cancelCreate()' width="50">Cancel</v-btn>
             </tr>

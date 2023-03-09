@@ -50,7 +50,7 @@ const handleSignup = async () => {
       <div class="col-5 form-widget flex flex-center">
         
         <div class="flex flex-center column q-pt-m">
-          <h3 class="header">Turonet</h3>
+          <h3 class="header">Tutonet</h3>
         <div>
           <h5 class="description">Sign In</h5>
         </div>
@@ -72,7 +72,7 @@ const handleSignup = async () => {
           />
           </div>
           <div>
-          <button type="submit" class="q-mt-md">Sign in</button>
+          <button type="submit" class="q-mt-md bg-blue-8">Sign in</button>
         </div>
         </div>
         
@@ -84,7 +84,7 @@ const handleSignup = async () => {
       <div class="col-5 form-widget flex flex-center">
         
         <div class="flex flex-center column q-pt-m">
-          <h3 class="header">Turonet</h3>
+          <h3 class="header">Tutonet</h3>
           <div>
           <h5 class="description">Sign Up</h5>
           </div>
@@ -105,12 +105,12 @@ const handleSignup = async () => {
         
       </div>
       <div>
-          <button type="submit" class="q-mt-md">Sign up</button>
+          <button type="submit" class="q-mt-md bg-blue-8">Sign up</button>
         </div>
     </form>
 
     <div class="flex flex-center">
-      <button @click="isSignUp = !isSignUp" class="q-mt-l">
+      <button style="color: black" @click="isSignUp = !isSignUp" class="q-mt-l bg-grey-4">
         {{
           isSignUp
             ? "Don't have an account yet? Sign Up"

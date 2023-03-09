@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="column flex-center">
     <h3>Edit Course</h3>
     <CourseForm
       v-if="courseData"
