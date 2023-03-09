@@ -8,11 +8,12 @@ const displayCreateForm = ref(false);
 
 <template>
   <div>
-    <div>
-      <h4>Tutor Management</h4>
+    <div class="column flex-center">
+      <h3>Tutor Management</h3>
+      <p>Click the button to add a new tutor or list all tutors</p>
       <div class="tutor-buttons">
         <button @click="displayCreateForm = !displayCreateForm">
-          {{ displayCreateForm ? "List All Tutors" : "Add A Tutor" }}
+          {{ displayCreateForm ? "All Tutors" : "Add a Tutor" }}
         </button>
         <!-- <button @click="diplayActiveTutors = !diplayActiveTutors">
           {{ diplayActiveTutors ? "All Tutors" : "Current Tutors Only" }}

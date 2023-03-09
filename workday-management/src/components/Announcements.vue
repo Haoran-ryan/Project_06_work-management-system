@@ -1,5 +1,7 @@
 <template>
-  <div class="container">
+  <div class="container column flex-center">
+    <h3>Announcements</h3>
+
     <button
       @click="
         () => {
@@ -10,14 +12,14 @@
     >
       {{ displayAnnouncements ? "Create Announcement" : "All Announcements" }}
     </button>
+</div>
+
 
     <div class="q-pa-xl" v-if="allAnnouncements && displayAnnouncements">
       <h3 class="text-h5">All Announcements</h3>
       <q-list>
-        <q-item
-          v-for="announcement in allAnnouncements.value"
-          :key="announcement.id"
-        >
+        <q-separator></q-separator>
+        <q-item v-for="announcement in allAnnouncements.value" :key="announcement.id">
           <q-item-section>
             <q-item-label>Title: {{ announcement.title }}</q-item-label>
             <q-item-label caption
@@ -41,41 +43,39 @@
       </q-list>
     </div>
 
-    <form v-else @submit.prevent="_submitCreateForm">
-      <h3 class="text-h5">Create an announcement</h3>
+    
+    <form v-else @submit.prevent="_submitCreateForm" class="column flex-center">
+      <h5>Create an announcement</h5>
       <div class="q-pa-md">
-        <div class="q-gutter-md" style="max-width: 300px">
-          <q-input
-            filled
-            label="Title"
-            type="text"
-            v-model="newAnnouncement.title"
-          />
-          <q-input
+        <div style="max-width: 300px">
+            <label for="title">Title</label>
+            <div>
+            <input
+                filled
+                label="Title"
+                type="text"
+                v-model="newAnnouncement.title"
+            />
+            </div>
+          
+            <label for="description">Description</label>
+            <div>
+            <input
             filled
             label="Description"
             type="text"
             v-model="newAnnouncement.description"
-          />
+            />
+            </div>
+          
         </div>
       </div>
-      <div class="q-pa-md q-gutter-sm">
-        <q-btn
-          style="background: #ff0080; color: white"
-          label="Create"
-          type="submit"
-          icon="edit_location"
-          no-caps
-        />
-        <q-btn
-          style="background: goldenrod; color: white"
-          label="Back"
-          icon="directions"
-          @click="displayAnnouncements = true"
-        />
+
+      <div>
+        <button type="submit">Create</button>
       </div>
+
     </form>
-  </div>
 </template>
 
 <script setup>

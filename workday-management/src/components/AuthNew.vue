@@ -48,12 +48,11 @@ const handleSignup = async () => {
       @submit.prevent="handleLogin"
     >
       <div class="col-5 form-widget flex flex-center">
-        <h3 class="header">Supabase + Vue 3</h3>
-        
         
         <div class="flex flex-center column q-pt-m">
+          <h3 class="header">Turonet</h3>
         <div>
-          <p class="description">Sign In</p>
+          <h5 class="description">Sign In</h5>
         </div>
         <div>
           <input
@@ -83,11 +82,11 @@ const handleSignup = async () => {
     </form>
     <form v-else class="row flex-center flex" @submit.prevent="handleSignup">
       <div class="col-5 form-widget flex flex-center">
-        <h3 class="header">Supabase + Vue 3</h3>
         
         <div class="flex flex-center column q-pt-m">
+          <h3 class="header">Turonet</h3>
           <div>
-          <p class="description">Sign Up</p>
+          <h5 class="description">Sign Up</h5>
           </div>
           <input
             class="inputField"
@@ -122,3 +121,4 @@ const handleSignup = async () => {
     
   </div>
 </template>
+
