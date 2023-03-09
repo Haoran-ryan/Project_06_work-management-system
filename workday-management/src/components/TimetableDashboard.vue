@@ -23,16 +23,13 @@
             animated
             transition-prev="jump-up"
             transition-next="jump-up"
+            v-for="time in timesOnSupa" :key="time.id" 
           >
-            <!-- <q-tab-panel name="2023/03/01">
-              <div class="text-h4 q-mb-md">2023/03/01</div>
-              <p>Tutor: </p><p>Course: </p><p>Time: </p>
-            </q-tab-panel> -->
-              <q-tab-panel v-for="time in timesOnSupa" :key="time.id" :value="time.id" :name="time.start_date">
-                <div class="text-h4 q-mb-md">{{ time.start_date }}</div>
+              <q-tab-panel :value="time.id" :name="time.start_date.replaceAll('-', '/')">
+                <!-- <div class="text-h4 q-mb-md">{{ time.start_date }}</div> -->
                 <p>Tutor: {{ time.tutor.name }}</p>
-                <p>Course: {{ time.course }}</p>
-                <p>Time: {{ time.time }}</p>
+                <p>Course: {{ time.course.name }}</p>
+                <p>Start time: {{ time.time }}</p>
               </q-tab-panel>
 
             
@@ -44,25 +41,12 @@
     <Times />
   </div>
 </template>
-<script setup>
-import { supabase } from "../lib/supabaseClient";
-import { ref, toRefs, defineProps, onMounted } from "vue";
-const timesOnSupa = ref([]);
-async function getAllTimes() {
-  let { data, error } = await supabase.from("times").select("*, tutor:tutor_id(name)");
-
-  if (data) {
-    timesOnSupa.value = data;
-  }
-}
-
-onMounted(() => {
-  getAllTimes();
-});
-</script>
 
 
 <script>
+import { supabase } from "../lib/supabaseClient";
+import { ref, toRefs, defineProps, onMounted } from "vue";
+
 import Times from './Times.vue';
 
 const today = new Date();
@@ -81,9 +65,37 @@ export default {
     return{
       splitterModel: ref(50),
       date: ref(todayDate),
-      events: [ '2023/03/01', '2023/03/05', '2023/03/06' ]
+      events: [ ],
+      timesOnSupa: []
     }
     
-  }
+  },
+  methods: {
+    async getAllTimes() {
+      let { data, error } = await supabase
+        .from("times")
+        .select("*, tutor:tutor_id(name), course:course(name, duration)");
+
+      if (data) {
+        this.timesOnSupa = data.sort(
+          (a, b) => new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`)
+        );
+        this.timesOnSupa = data.sort(
+          (a, b) => new Date(a.start_date) - new Date(b.start_date)
+        );
+        this.events = this.timesOnSupa.map(time => time.start_date.replaceAll('-', '/'));
+      }
+    },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      return `${year}/${month}/${day}`;
+    }
+  },
+  async mounted() {
+    await Promise.all([this.getAllTimes()]);
+  },
 }
 </script>

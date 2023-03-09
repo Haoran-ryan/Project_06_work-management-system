@@ -70,7 +70,9 @@ export default {
       let { data, error } = await supabase.from("tutors").select("id, name, courses_qualified");
 
       if (data) {
-        this.tutorsOnSupa = data;
+        this.tutorsOnSupa = data.sort(
+          (a, b) => a.id - b.id
+        );
       }
       this.filteredTutors = this.tutorsOnSupa
     },
@@ -88,8 +90,8 @@ export default {
       } else if (courses.length === 2) {
         return courses.join(' and ');
       } else {
-        const lastCourse = courses.pop();
-        return `${courses.join(', ')} and ${lastCourse}`;
+        const lastCourse = courses[courses.length - 1];
+        return `${courses.slice(0, -1).join(', ')} and ${lastCourse}`;
       }
     },
     editTime(event, time) {
@@ -116,12 +118,15 @@ export default {
         select.classList.remove('display');
       }
       const tutorSelect = tr.querySelector("#tutor")
-      for (let child of tutorSelect.children) {
-        if (child.textContent.length === 0) {
-          child.remove()
+      setTimeout(() => {
+        for (let option of tutorSelect.children) {
+            if (!option.textContent.includes(this.originalTime.course.name)) {
+              option.disabled = true
+            }
         }
-      }
-
+      }, 100);
+      
+      
     },
     cancelEdit(event, time) {
       const btn = event.target;
@@ -155,6 +160,13 @@ export default {
       tr.querySelector('#tutor').value = this.originalTime.tutor_id
 
       this.tutorOption = tutor => `${tutor.name} (ID: ${tutor.id})`;
+
+      const tutorSelect = tr.querySelector("#tutor")
+      setTimeout(() => {
+        for (let option of tutorSelect.children) {
+          option.disabled = false;
+        }
+      }, 100);
     },
     async updateTime(event, timeId) {
       const btn = event.target;
@@ -221,14 +233,27 @@ export default {
     updateTutors() {
       this.filteredTutors = this.tutorsOnSupa.filter(tutor => tutor.courses_qualified.includes(this.timeDetails.course.name))
 
-      const options = document.querySelectorAll("option")
-      if (options) {
-        for (let option of options) {
-          if (option.textContent.length === 0) {
-            option.remove()
+      const tutorSelects = document.querySelectorAll("#tutor")
+      let editedSelect
+      if (tutorSelects) {
+        for (let select of tutorSelects) {
+          if (!select.classList.contains('display')) {
+            editedSelect = select
           }
         }
       }
+      for (let option of editedSelect.children) {
+        option.disabled = false
+        if (option.textContent.length === 0) {
+          option.remove()
+        }
+        setTimeout(() => {
+          if (!option.textContent.includes(this.timeDetails.course.name)) {
+          option.disabled = true
+        }
+        }, 100);
+      }
+      
       
     }
   },
@@ -265,14 +290,13 @@ export default {
                 <td>
                   <select v-model="time.tutor_id" id='tutor' class='display'>
                     <option disabled value="">Please select tutor</option>
-                    <!-- <option v-for="tutor in tutorsOnSupa" :key="tutor.id" :value="tutor.id">{{ tutorOption(tutor) }}</option> -->
-                    <option :key="time.tutor_id" :value="time.tutor_id">{{time.tutor.name}} (ID: {{ time.tutor_id }})</option>
+                    <option v-for="tutor in tutorsOnSupa" :key="tutor.id" :value="tutor.id">{{ tutorOption(tutor) }}</option>
+                    <!-- <option :key="time.tutor_id" :value="time.tutor_id">{{time.tutor.name}} (ID: {{ time.tutor_id }})</option>
                     <option v-for="tutor in filteredTutors" :key="tutor.id" :value="tutor.id">
                       <span v-if="tutor.id !== time.tutor_id">
                         {{tutor.name}} (ID: {{ tutor.id }})
                       </span>
-                       
-                    </option>
+                    </option> -->
                   </select>
                 </td>
                 <v-btn id='edit' width="50" @click='editTime($event, time)'>Edit</v-btn>
