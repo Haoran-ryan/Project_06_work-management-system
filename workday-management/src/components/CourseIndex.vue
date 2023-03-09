@@ -2,10 +2,16 @@
   <div class="container column flex-center">
     <div class="column flex-center">
     <h3>Course Management</h3>
-    
-    
-      <button @click="displayCourses = !displayCourses">
-      {{ displayCourses ? "Create a Course" : "All Courses" }}
+
+    <button
+      @click="
+        () => {
+          displayCourses = !displayCourses;
+          getAllCourses();
+        }
+      "
+    >
+      {{ displayCourses ? "Create Course" : "All Courses" }}
     </button>
     </div>
     
@@ -101,7 +107,7 @@
 
 <script setup>
 import { supabase } from "src/lib/supabaseClient";
-import { reactive, onUpdated, onMounted, ref } from "vue";
+import { reactive, onUpdated, onMounted, ref, onBeforeMount } from "vue";
 
 import CourseForm from "./CourseForm.vue";
 
@@ -120,6 +126,7 @@ const getAllCourses = async () => {
 };
 
 // getAllCourses();
+onBeforeMount(getAllCourses);
 onMounted(getAllCourses);
 onUpdated(getAllCourses);
 

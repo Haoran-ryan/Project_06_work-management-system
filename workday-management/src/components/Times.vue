@@ -1,17 +1,5 @@
-<script setup>
-
-// const filteredTutors = ref([])
-// function updateTutors(time) {
-//   filteredTutors.value = tutorsOnSupa.value.filter(tutor => tutor.courses_qualified.includes(time.course.name))
-// }
-
-
-
-
-</script>
-
 <script>
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { supabase } from "../lib/supabaseClient";
 import CreateTime from "./CreateTime.vue";
 
@@ -28,20 +16,26 @@ export default {
       timeDetails: {},
       originalTime: '',
       createForm: ref(false),
-      filteredTutors: [],
-      selectedCourse: '',
+      filteredTutors: []
     }
   },
   watch: {
-    timeDetails(newVal, oldVal) {
-      if (newVal) {
-        alert('h')
-        this.updateTutors()
-      } else {
-        this.filteredTutors = []
-      }
-    },
+    timeDetails: {
+      handler(newValue, oldValue) {
+        if (newValue) {
+          this.updateTutors()
+        } else {
+          filteredTutors.value = []
+        }
+      },
+      deep: true
+    }
   },
+  // computed: {
+  //   filteredTutorsForTime() {
+  //     return this.filteredTutors.filter(tutor => tutor.id !== this.time.tutor_id);
+  //   }
+  // },
   methods: {
     async getAllTimes() {
       let { data, error } = await supabase
@@ -120,6 +114,12 @@ export default {
       }
       for (let select of selects) {
         select.classList.remove('display');
+      }
+      const tutorSelect = tr.querySelector("#tutor")
+      for (let child of tutorSelect.children) {
+        if (child.textContent.length === 0) {
+          child.remove()
+        }
       }
 
     },
@@ -220,6 +220,16 @@ export default {
     },
     updateTutors() {
       this.filteredTutors = this.tutorsOnSupa.filter(tutor => tutor.courses_qualified.includes(this.timeDetails.course.name))
+
+      const options = document.querySelectorAll("option")
+      if (options) {
+        for (let option of options) {
+          if (option.textContent.length === 0) {
+            option.remove()
+          }
+        }
+      }
+      
     }
   },
   async mounted() {
@@ -255,11 +265,13 @@ export default {
                 <td>
                   <select v-model="time.tutor_id" id='tutor' class='display'>
                     <option disabled value="">Please select tutor</option>
-                    <option :value="time.tutor_id"> {{time.tutor.name}} (ID: {{ time.tutor_id }})</option>
+                    <!-- <option v-for="tutor in tutorsOnSupa" :key="tutor.id" :value="tutor.id">{{ tutorOption(tutor) }}</option> -->
+                    <option :key="time.tutor_id" :value="time.tutor_id">{{time.tutor.name}} (ID: {{ time.tutor_id }})</option>
                     <option v-for="tutor in filteredTutors" :key="tutor.id" :value="tutor.id">
-                      <!-- <span v-if="tutor.id != time.tutor_id"> -->
+                      <span v-if="tutor.id !== time.tutor_id">
                         {{tutor.name}} (ID: {{ tutor.id }})
-                      <!-- </span> -->
+                      </span>
+                       
                     </option>
                   </select>
                 </td>
