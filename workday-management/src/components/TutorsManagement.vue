@@ -34,7 +34,7 @@ async function getCurrentTutors() {
     .eq("active", true);
   if (data) {
     allCurrentTotors.value = data;
-    console.log(allCurrentTotors.value);
+    // console.log(allCurrentTotors.value);
   }
 }
 
@@ -60,12 +60,14 @@ function _submitForm() {
     ]);
   };
   insertIntoSupabase();
-  displayCreateForm.value = false;
+
   // clear the form
   newTutor.name = "";
   newTutor.email = "";
-  newTutor.qualifications = "";
+  newTutor.qualification = "";
   newTutor.coursesQualified = "";
+
+  emit();
 }
 
 async function _handleActiveStatus(tutorID, currentStatus) {
@@ -78,13 +80,12 @@ async function _handleActiveStatus(tutorID, currentStatus) {
 </script>
 
 <template>
-
-    <div v-if="displayCreateForm">
-      <div class="column flex-center">
-        <h5>Create a tutor</h5>
-        <form @submit.prevent="_submitForm" class="flex-center">
-          <div class="column q-pa-md">
-            <label for="name">Name: </label>
+  <div v-if="displayCreateForm">
+    <div class="column flex-center">
+      <h5>Create a tutor</h5>
+      <form @submit.prevent="_submitForm" class="flex-center">
+        <div class="column q-pa-md">
+          <label for="name">Name: </label>
           <input type="text" id="name" v-model="newTutor.name" />
 
           <label for="email">Email: </label>
@@ -103,13 +104,12 @@ async function _handleActiveStatus(tutorID, currentStatus) {
             id="courses-qualified"
             v-model="newTutor.coursesQualified"
           />
-          </div>
-          <button type="submit">Create</button>
-        </form>
-      </div>
+        </div>
+        <button type="submit">Create</button>
+      </form>
     </div>
-    <div v-if="!displayCreateForm" class="q-pa-xl">
-      
+  </div>
+  <div v-if="!displayCreateForm" class="q-pa-xl">
     <q-separator></q-separator>
     <div v-if="displayCreateForm == false" class="q-pa-xl">
       <h3 class="text-h5">
@@ -124,7 +124,6 @@ async function _handleActiveStatus(tutorID, currentStatus) {
       <q-list v-if="displayCurrentTutors == false">
         <q-item v-for="tutor in allTutorsOnSupa" :key="tutor.id">
           <q-item-section>
-            
             <q-item-label>Tutor Name: {{ tutor.name }}</q-item-label>
             <q-item-label>Email: {{ tutor.email }}</q-item-label>
             <q-item-label
