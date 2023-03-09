@@ -269,6 +269,7 @@ export default {
             tr.style.display = 'none'
           }
         }
+        tbody.scrollIntoView({ block: "end" });
       }
     },
     showAll(event) {
@@ -280,8 +281,10 @@ export default {
       const tbody = document.querySelector('tbody')
       const trs = tbody.querySelectorAll('tr')
       for (let tr of trs) {
-            tr.style.display = 'inline'
+            tr.style.display = 'revert'
       }
+      tbody.scrollIntoView({ block: "end" });
+
        
     }
   },
