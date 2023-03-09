@@ -263,7 +263,7 @@ export default {
       const trs = tbody.querySelectorAll('tr')
       if (select.value.length > 0) {
         for (let tr of trs) {
-          tr.style.display = 'inline'
+          tr.style.display = 'revert'
           const course = tr.querySelector('#course')
           if (course.value != select.value) {
             tr.style.display = 'none'
