@@ -33,10 +33,18 @@ export default {
   methods: {
     async handleSubmit(newTutorData) {
       console.log("newTutorData: ", newTutorData);
+      const { name, email, qualifcations, courses_qualified } = newTutorData;
       // update the data to supabase
       const { error } = await supabase
         .from("tutors")
-        .update(newTutorData)
+        .update([
+          {
+            name: name,
+            email: email,
+            qualifcations: qualifcations,
+            courses_qualified: courses_qualified,
+          },
+        ])
         .eq("id", this.$route.params.id);
     },
   },

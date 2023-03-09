@@ -45,8 +45,8 @@ const handleSignup = async () => {
     <button @click="isSignUp = !isSignUp">
       {{
         isSignUp
-          ? "Already have an account? Sign In"
-          : "Don't have an account yet? Sign Up"
+          ? "Don't have an account yet? Sign Up"
+          : "Already have an account? Sign In"
       }}
     </button>
     <form
