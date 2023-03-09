@@ -29,7 +29,7 @@
             >
           </q-item-section>
         </q-item>
-        <q-item clickable rel="noopener" to="/manager" v-if="loggedIn !== null">
+        <q-item clickable rel="noopener" to="/manager" v-if="loggedIn">
           <q-item-section avatar>
             <q-icon name="code" />
           </q-item-section>
