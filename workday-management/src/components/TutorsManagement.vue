@@ -51,11 +51,10 @@ function _submitForm() {
   newTutor.coursesQualified = "";
 }
 
-async function _handleDelete(tutorID) {
-  // console.log(tutorID);
+async function _handleActiveStatus(tutorID, currentStatus) {
   const { data, error } = await supabase
     .from("tutors")
-    .delete()
+    .update({ active: !currentStatus })
     .eq("id", tutorID);
   getAllTutors();
 }
@@ -96,9 +95,13 @@ async function _handleDelete(tutorID) {
         <q-item v-for="tutor in allTutorsOnSupa" :key="tutor.id">
           <q-item-section>
             <q-item-label>Tutor Name: {{ tutor.name }}</q-item-label>
-            <q-item-label caption>Email: {{ tutor.email }}</q-item-label>
-            <q-item-label caption
+            <q-item-label>Email: {{ tutor.email }}</q-item-label>
+            <q-item-label
               >Qualifications: {{ tutor.qualifications }}</q-item-label
+            >
+            <q-item-label caption
+              >Status:
+              {{ tutor.active ? "Current" : "Not Current" }}</q-item-label
             >
           </q-item-section>
           <q-item-section side>
@@ -110,7 +113,10 @@ async function _handleDelete(tutorID) {
               icon="edit"
               :to="{ name: 'edit', params: { id: tutor.id } }"
             />
-            <q-btn icon="delete" @click="_handleDelete(tutor.id)" />
+            <q-btn
+              icon="delete"
+              @click="_handleActiveStatus(tutor.id, tutor.active)"
+            />
           </q-item-section>
         </q-item>
       </q-list>
