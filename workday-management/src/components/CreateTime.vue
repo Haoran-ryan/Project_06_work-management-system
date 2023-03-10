@@ -133,11 +133,12 @@ export default {
           <option v-for="tutor in filteredTutors" :key="tutor.id" :value="tutor.id">{{ tutor.id }} {{ tutor.name }}</option>
         </select>
       </td>
-      <v-btn id='create'  @click='createTime($event)' 
-      width="50">Create</v-btn>
+     
+      <q-icon id='createTime' @click='createTime($event)' name="add_circle_outline" />
+      <q-icon id='cancelCreate' @click='cancelCreate($event)' name="remove_circle_outline" />
+                
+               
       
-      <v-btn id='cancel'  @click='cancelCreate($event)' 
-      width="50">Cancel</v-btn>
 
       
       

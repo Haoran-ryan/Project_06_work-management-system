@@ -95,6 +95,7 @@ export default {
       }
     },
     editTime(event, time) {
+      this.$data.createForm = false
       // Change the tutor text to a different format
       this.tutorOption = tutor => `${tutor.name} (ID: ${tutor.id}) qualified for ${this.getQualifiedCourses(tutor.courses_qualified)}`;
       this.timeDetails = time
@@ -219,6 +220,7 @@ export default {
       }
     },
     async deleteTime(timeId) {
+      this.$data.createForm = false;
       const confirmed = window.confirm('Are you sure you want to delete this time record?');
       if (!confirmed) {
         return
@@ -315,21 +317,21 @@ export default {
                 <th>Time</th>
                 <th>Course</th>
                 <th>Tutor</th>
-                <th colspan="4"></th>
+                <th class='lastColumn' colspan="4"></th>
             </tr>
             </thead>
             <tbody>
              <CreateTime :createForm="createForm" @time-created="getAllTimesAfterCreate" />
             <tr v-for="time in timesOnSupa" :key="time.id">
-                <td><input type="date" v-model="time.start_date" id='start_date' class='display'></td>
-                <td><input type="time" v-model="time.time" id='time' class='display'></td>
-                <td>
+                <td class='date'><input type="date" v-model="time.start_date" id='start_date' class='display'></td>
+                <td class='time'><input type="time" v-model="time.time" id='time' class='display'></td>
+                <td class='course'>
                   <select v-model="time.course.name" id='course' class='display'>
                     <option disabled value="">Please select course</option>
                     <option v-for="course in courseDurations" :key="course.name" :value="course.name">{{ course.name }} ({{ course.duration }} weeks)</option>
                   </select>
                 </td>
-                <td>
+                <td class='tutor'>
                   <select v-model="time.tutor_id" id='tutor' class='display'>
                     <option disabled value="">Please select tutor</option>
                     <option v-for="tutor in tutorsOnSupa" :key="tutor.id" :value="tutor.id">{{ tutorOption(tutor) }}</option>
@@ -341,12 +343,12 @@ export default {
                     </option> -->
                   </select>
                 </td>
-                <v-btn class="q-px-md" id='edit' width="50" @click='editTime($event, time)'>Edit</v-btn>
-                <v-btn id='delete'  @click='deleteTime(time.id)' width="50">Delete</v-btn>
-                <v-btn class="q-px-md" id='confirmEdit' @click='updateTime($event, time.id)' width="50">Confirm</v-btn>
-                <v-btn class="q-px-md" id='cancelEdit' @click='cancelEdit($event, time)' width="50">Cancel</v-btn>
-                <v-btn id='createTime' width="50">Create</v-btn>
-                <v-btn id='cancelCreate' @click='cancelCreate()' width="50">Cancel</v-btn>
+                
+                <q-icon id='edit' @click='editTime($event, time)' name="edit" />
+                <q-icon id='delete' @click='deleteTime(time.id)' name="delete" />
+                <q-icon id='confirmEdit' @click='updateTime($event, time.id)' name="thumb_up_alt" />
+                <q-icon id='cancelEdit' @click='cancelEdit($event, time)' name="cancel" />
+                
             </tr>
             </tbody>
         </table>   
@@ -372,11 +374,18 @@ export default {
 th {
   text-align: left;
 }
+th.lastColumn {
+  border: none;
+  background-color: transparent;
+}
+tr {
+  vertical-align: 50%;
+}
 td {
   pointer-events: none;
 }
 
-#confirmEdit, #cancelEdit, #createTime, #cancelCreate {
+#confirmEdit, #cancelEdit {
   display: none;
 }
 
@@ -384,8 +393,28 @@ v-btn {
   cursor: pointer;
 }
 
+#edit, #delete, #confirmEdit, #cancelEdit, #createTime, #cancelCreate {
+  font-size: large;
+  cursor: pointer;
+}
+
 input, select {
   cursor: pointer;
+}
+td.time {
+  width: 130px;
+}
+td.time > input {
+  width: 100%;
+}
+td.date {
+  width: 150px;
+}
+td.course {
+  width: 300px;
+}
+td.tutor {
+  width: 650px;
 }
 
 input.display {
