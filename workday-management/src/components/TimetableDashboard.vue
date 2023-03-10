@@ -3,7 +3,7 @@
      <div>
       <q-splitter
         v-model="splitterModel"
-        style="height: 450px"
+        style="height: 450px; width: 700px"
       >
 
         <template v-slot:before>
@@ -19,6 +19,7 @@
 
         <template v-slot:after>
           <q-tab-panels
+            style="padding-left: 20px"
             v-model="date"
             animated
             transition-prev="jump-up"
