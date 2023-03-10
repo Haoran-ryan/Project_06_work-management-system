@@ -24,9 +24,9 @@
             animated
             transition-prev="jump-up"
             transition-next="jump-up"
-            v-for="time in timesOnSupa" :key="time.id" 
+            v-for="time in timesOnSupa" :key="time.id" :value="time.id"
           >
-              <q-tab-panel :value="time.id" :name="time.start_date.replaceAll('-', '/')">
+              <q-tab-panel :name="time.start_date.replaceAll('-', '/')">
                 <!-- <div class="text-h4 q-mb-md">{{ time.start_date }}</div> -->
                 <p>Tutor: {{ time.tutor.name }}</p>
                 <p>Course: {{ time.course.name }}</p>
@@ -39,7 +39,7 @@
       </q-splitter>
     
     </div>
-    <Times />
+    <Times @time-updated="getAllTimes" />
   </div>
 </template>
 

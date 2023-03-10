@@ -49,6 +49,7 @@ export default {
         this.timesOnSupa = data.sort(
           (a, b) => new Date(a.start_date) - new Date(b.start_date)
         );
+        this.$emit('time-updated');
       }
     },
     async getAllTimesAfterCreate() {
@@ -64,6 +65,7 @@ export default {
         this.timesOnSupa = data.sort(
           (a, b) => new Date(a.start_date) - new Date(b.start_date)
         );
+        this.$emit('time-updated');
       }
     },
     async getAllTutors() {
