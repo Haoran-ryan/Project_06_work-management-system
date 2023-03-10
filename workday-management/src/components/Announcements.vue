@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="container column flex-center">
     <h3>Announcements</h3>
 
@@ -43,7 +44,7 @@
       </q-list>
     </div>
 
-    
+
     <form v-else @submit.prevent="_submitCreateForm" class="column flex-center">
       <h5>Create an announcement</h5>
       <div class="q-pa-md">
@@ -57,7 +58,7 @@
                 v-model="newAnnouncement.title"
             />
             </div>
-          
+
             <label for="description">Description</label>
             <div>
             <input
@@ -67,7 +68,7 @@
             v-model="newAnnouncement.description"
             />
             </div>
-          
+
         </div>
       </div>
 
@@ -76,6 +77,7 @@
       </div>
 
     </form>
+  </div>
 </template>
 
 <script setup>
