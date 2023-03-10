@@ -15,6 +15,7 @@ export default {
       tutorOption: tutor => `${tutor.name} (ID: ${tutor.id})`,
       timeDetails: {},
       originalTime: '',
+      editMode: false,
       createForm: ref(false),
       filteredTutors: []
     }
@@ -97,6 +98,10 @@ export default {
       }
     },
     editTime(event, time) {
+      if (this.editMode === true) {
+        return alert ("Please exit the edit mode for the other row first.")
+      }
+      this.editMode = true
       this.$data.createForm = false
       // Change the tutor text to a different format
       this.tutorOption = tutor => `${tutor.name} (ID: ${tutor.id}) qualified for ${this.getQualifiedCourses(tutor.courses_qualified)}`;
@@ -163,7 +168,7 @@ export default {
       tr.querySelector('#tutor').value = this.originalTime.tutor_id
 
       this.tutorOption = tutor => `${tutor.name} (ID: ${tutor.id})`;
-
+      this.editMode = false
       const tutorSelect = tr.querySelector("#tutor")
       setTimeout(() => {
         for (let option of tutorSelect.children) {
@@ -209,6 +214,8 @@ export default {
       tr.querySelector('#delete').style.pointerEvents = 'auto';
       tr.querySelector('#edit').style.pointerEvents = 'auto';
       
+      this.editMode = false
+
       try {
         await supabase.from('times')
         .update({ start_date: tr.querySelector('#start_date').value,
@@ -222,6 +229,9 @@ export default {
       }
     },
     async deleteTime(timeId) {
+      if (this.editMode === true) {
+        return alert ("Please exit the edit mode for the other row first.")
+      }
       this.$data.createForm = false;
       const confirmed = window.confirm('Are you sure you want to delete this time record?');
       if (!confirmed) {
