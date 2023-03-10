@@ -12,7 +12,7 @@
               v-model="date"
               today-btn
               :events="events"
-              event-color="orange"
+              event-color="indigo-6"
             />
           </div>
         </template>

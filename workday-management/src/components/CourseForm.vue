@@ -1,11 +1,10 @@
 <template>
   <div class="q-pa-md" style="max-width: 400px">
-    <q-form @submit.prevent="handleSubmit" class="q-gutter-md">
+    <q-form @submit.prevent="handleSubmit" class="column flex-center">
       <q-input
         filled
         v-model="name"
         label="Course name"
-        hint="course name"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
@@ -14,7 +13,6 @@
         filled
         v-model="description"
         label="Course description"
-        hint="the syallabus brief of the course"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
@@ -23,7 +21,7 @@
         filled
         type="number"
         v-model="duration"
-        label="course duration"
+        label="Course duration"
         lazy-rules
         :rules="[
           (val) => (val !== null && val !== '') || 'Please type the duration',

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="bg-white">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-indigo-6">
         <q-btn
           flat
           dense
@@ -11,7 +11,7 @@
           icon="menu"
         />
 
-        <q-toolbar-title> Turonet </q-toolbar-title>
+        <q-toolbar-title> Tutonet </q-toolbar-title>
       </q-toolbar>
     </q-header>
 

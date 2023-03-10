@@ -3,7 +3,7 @@
     <div class="column flex-center">
     <h3>Course Management</h3>
 
-    <button
+    <button class="bg-blue-8"
       @click="
         () => {
           displayCourses = !displayCourses;

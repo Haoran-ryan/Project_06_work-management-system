@@ -80,6 +80,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
 </script>
 
 <template>
+  <div>
   <div v-if="displayCreateForm">
     <div class="column flex-center">
       <h5>Create a tutor</h5>
@@ -105,7 +106,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
             v-model="newTutor.coursesQualified"
           />
         </div>
-        <button type="submit">Create</button>
+        <button class="bg-blue-8" type="submit">Create</button>
       </form>
     </div>
   </div>
@@ -186,6 +187,7 @@ async function _handleActiveStatus(tutorID, currentStatus) {
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <style>
